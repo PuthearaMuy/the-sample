@@ -24,4 +24,4 @@ dist-ssr
 *.sw?
 
 #App ignore
-/src/assets/audios
+/src/assets/audios/
