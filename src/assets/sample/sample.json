@@ -1,0 +1,26 @@
+{
+  "content": [
+    {
+      "id": 1,
+      "key": "C",
+      "ownerId": 1,
+      "sampleType": "Trap",
+      "tempo": 130,
+      "title": "King trap",
+      "type": "audio/wave",
+      "url": "/audios/128_HeWhoKnowsUs.wav",
+      "createDate": "12-12-2024"
+    },
+    {
+      "id": 2,
+      "key": "G",
+      "ownerId": 1,
+      "sampleType": "R&B",
+      "tempo": 130,
+      "title": "Rap soul",
+      "type": "audio/wave",
+      "url": "/audios/140_InTheEnd.wav",
+      "createDate": "13-12-2024"
+    }
+  ]
+}

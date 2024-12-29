@@ -1,6 +1,4 @@
 export class LabelConstants {
-    public static readonly APP_NAME: string = "The sample";
-
 
     public static readonly pages: Page[] = [
         {

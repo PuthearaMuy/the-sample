@@ -1,0 +1,12 @@
+.sample-container {
+    text-align: left;
+    color: var(--primary-color);
+    padding: 10px !important;
+    border-radius: 8px;
+    background-color: var(--secondary-background-color);
+    cursor: pointer;
+}
+
+.sample-container:hover {
+    background-color: var(--secondary-hover-background-color);
+}

@@ -10,17 +10,17 @@ export class SampleServiceAPI {
 
     public static getInstance(): SampleServiceAPI {
         if (!SampleServiceAPI.instance) {
-            SampleServiceAPI.instance = new SampleServiceAPI("http://localhost:8002/api/v1")
+            SampleServiceAPI.instance = new SampleServiceAPI("/src/assets")
         }
         return SampleServiceAPI.instance;
     }
 
     getSamples() {
-        return axiosInstance.get(this.baseUrl + "/sample");
+        return axiosInstance.get(this.baseUrl + "/sample/sample.json");
     }
 
-    getSampleAudio(id: number) {
+    getSampleAudio(url: string) {
 
-        return axiosInstance.get(this.baseUrl + "/sample/" + id, {responseType: 'blob'});
+        return axiosInstance.get(this.baseUrl + url, {responseType: 'blob'});
     }
 }

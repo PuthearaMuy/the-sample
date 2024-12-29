@@ -1,6 +1,9 @@
 import './App.css'
 import Layout from "./layout/Layout.tsx";
 import {createTheme, ThemeProvider} from "@mui/material";
+import {ApplicationContext} from "./contexts/ApplicationContext.ts";
+import {AppContext} from "./contexts/model/AppContext.ts";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 
 const theme = createTheme({
     cssVariables: true,
@@ -9,14 +12,21 @@ const theme = createTheme({
     },
 });
 
+const queryClient = new QueryClient();
+const appContext: AppContext = {
+    applicationName: import.meta.env.VITE_APP_NAME,
+};
+
 function App() {
     return (
-        <>
-            <ThemeProvider theme={theme}>
-                <Layout/>
-            </ThemeProvider>
-        </>
+        <ApplicationContext.Provider value={appContext}>
+            <QueryClientProvider client={queryClient}>
+                <ThemeProvider theme={theme}>
+                    <Layout/>
+                </ThemeProvider>
+            </QueryClientProvider>
+        </ApplicationContext.Provider>
     )
 }
 
-export default App
+export default App;

@@ -1,7 +1,7 @@
 import {createBrowserRouter, Navigate, RouteObject} from "react-router-dom";
 import App from "../App.tsx";
 import About from "../page/About.tsx";
-import Home from "../page/Home.tsx";
+import Home from "../page/home/Home.tsx";
 import NotFoundPage from "../layout/NotfoundPage.tsx";
 
 const routes: RouteObject[] = [

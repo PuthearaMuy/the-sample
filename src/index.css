@@ -3,19 +3,28 @@
     line-height: 1.5;
     font-weight: 400;
     color-scheme: light dark;
-    color: rgba(255, 255, 255, 0.87);
-    background-color: #242424;
-
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    --popin-font:  "Poppins", serif;
+
+    --popin-font: "Poppins", serif;
     --merinda-font: "Merienda", serif;
+    --primary-color: rgba(255, 255, 255, 0.87);
+    --primary-background-color: #242424;
+    --primary-bright-color: #7fdeff;
+    --secondary-background-color: #FFFFFF0A;
+    --secondary-hover-background-color: #FFFFFF10;
+    --secondary-active-background-color: #FFFFFF40;
+
+    color: var(--primary-color);
+    background-color: var(--primary-background-color);
+    height: 100%;
+    width: 100%;
 }
 
 * {
-    font-family: "Poppins", serif;
+    font-family: var(--popin-font);
 }
 
 body {
@@ -26,4 +35,22 @@ body {
     margin: 0 auto;
 }
 
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
 
+/* Track */
+::-webkit-scrollbar-track {
+    background: var(--secondary-background-color);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: var(--secondary-background-color);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-active-background-color);
+}

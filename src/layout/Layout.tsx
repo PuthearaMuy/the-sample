@@ -1,43 +1,19 @@
-// import {Link, Outlet} from "react-router-dom";
 import "./style/Layout.css";
 import {AppBar, Box, Button, Container, Toolbar, Typography} from "@mui/material";
 import {Outlet, useNavigate} from "react-router-dom";
-import SearchInput from "../component/Search.tsx";
+import SearchInput from "../components/Search.tsx";
 import {FilePathConstants} from "../constants/FilePathConstants.ts";
 import {LabelConstants} from "../constants/LabelConstants.ts";
-
-
-// const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+import {useContext} from "react";
+import {ApplicationContext} from "../contexts/ApplicationContext.ts";
 
 function Layout() {
     const navigate = useNavigate();
-    // return (<>
-    //     <div className="toolbar">
-    //         <h1>HI i am react layout</h1>
-    //         <Link to={{pathname: '/home'}}>Home</Link>
-    //         <br/>
-    //         <Link to={{pathname: '/about'}}>About</Link>
-    //     </div>
-    //
-    //     <div className="content">
-    //         <Outlet/>
-    //     </div>
-    // </>)
-
-    // const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-    //
-    // const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    //     setAnchorElUser(event.currentTarget);
-    // };
-    //
-    //
-    // const handleCloseUserMenu = () => {
-    //     setAnchorElUser(null);
-    // };
+    const context = useContext(ApplicationContext);
 
     return (
-        <div>
-            <AppBar position="static" color="transparent">
+        <div style={{width:'100%',height:'100%', display: 'flex', flexDirection: 'column'}}>
+            <AppBar position="sticky" color="transparent" sx={{backgroundColor: "var(--primary-background-color)"}}>
                 <Container maxWidth={false}>
                     <Toolbar disableGutters sx={{cursor: 'pointer', gap: '10px', width: '100%'}}>
                         <img alt={"logo"} src={FilePathConstants.WHITE_LOGO} onClick={() => navigate("/home")} style={{
@@ -58,7 +34,7 @@ function Layout() {
                             }}
                             onClick={() => navigate("/home")}
                         >
-                            {LabelConstants.APP_NAME}
+                            {context?.applicationName}
                         </Typography>
 
                         <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'},  mx: '40px', gap: '2em'}}>
@@ -74,39 +50,10 @@ function Layout() {
                         </Box>
 
                         <SearchInput/>
-                        {/*<Box sx={{flexGrow: 0}}>*/}
-                        {/*    <Tooltip title="Open settings">*/}
-                        {/*        <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>*/}
-                        {/*            <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg"/>*/}
-                        {/*        </IconButton>*/}
-                        {/*    </Tooltip>*/}
-                        {/*    <Menu*/}
-                        {/*        sx={{mt: '45px'}}*/}
-                        {/*        id="menu-appbar"*/}
-                        {/*        anchorEl={anchorElUser}*/}
-                        {/*        anchorOrigin={{*/}
-                        {/*            vertical: 'top',*/}
-                        {/*            horizontal: 'right',*/}
-                        {/*        }}*/}
-                        {/*        keepMounted*/}
-                        {/*        transformOrigin={{*/}
-                        {/*            vertical: 'top',*/}
-                        {/*            horizontal: 'right',*/}
-                        {/*        }}*/}
-                        {/*        open={Boolean(anchorElUser)}*/}
-                        {/*        onClose={handleCloseUserMenu}*/}
-                        {/*    >*/}
-                        {/*        {settings.map((setting) => (*/}
-                        {/*            <MenuItem key={setting} onClick={handleCloseUserMenu}>*/}
-                        {/*                <Typography sx={{textAlign: 'center'}}>{setting}</Typography>*/}
-                        {/*            </MenuItem>*/}
-                        {/*        ))}*/}
-                        {/*    </Menu>*/}
-                        {/*</Box>*/}
                     </Toolbar>
                 </Container>
             </AppBar>
-            <div className={"content"}>
+            <div className={"content"} style={{width:'100%', height:'100%'}}>
                 <Outlet/>
             </div>
         </div>
