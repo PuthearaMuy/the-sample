@@ -2,7 +2,7 @@ import WaveSurfer from "wavesurfer.js";
 import {SampleServiceAPI} from "../service/SampleServiceAPI.ts";
 import {useEffect, useState} from "react";
 import {AxiosResponse} from "axios";
-import {Container, IconButton} from "@mui/material";
+import {Container, IconButton, Skeleton} from "@mui/material";
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import PauseCircleIcon from '@mui/icons-material/PauseCircle';
 
@@ -10,26 +10,31 @@ interface Props {
     id: number;
     url: string;
     isPlaying: boolean;
-    onPlay?: any;
-
+    onPlay?: () => void;
 }
 
 function AudioWave({id, url, isPlaying, onPlay}: Props) {
     const [wave, setWave] = useState<WaveSurfer>(null);
     const [playing, setPlaying] = useState(false);
+    const [loading, setLoading] = useState(true);
+
+    const randomId = Math.random().toString(10).substring(2);
 
     useEffect(() => {
+
         SampleServiceAPI.getInstance().getSampleAudio(url).then((response: AxiosResponse<Blob>) => {
             const url = URL.createObjectURL(response.data);
-            const wave = WaveSurfer.create({
-                container: "#waveform" + id,
+            const waveSurfer = WaveSurfer.create({
+                container: "#waveform" + randomId,
                 waveColor: '#ffffff',
                 progressColor: '#7fdeff',
                 url: url,
                 height: 100,
             });
-            wave.on(('finish'), () => setPlaying(false))
-            setWave(wave);
+            waveSurfer.on(('finish'), () => setPlaying(false))
+            waveSurfer.on(('ready'), () => setLoading(false));
+
+            setWave(waveSurfer);
         })
     }, []);
 
@@ -48,23 +53,37 @@ function AudioWave({id, url, isPlaying, onPlay}: Props) {
             } else {
                 wave.play();
                 setPlaying(true);
-                onPlay();
+
+                if (onPlay) {
+                    onPlay();
+                }
             }
         }
     }
 
     return (
-        <Container
-            sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%', padding: '0 !important'}}>
-            <div id={"waveform" + id} style={{width: '100%'}}></div>
+        <>
+            {loading && <Skeleton height={100} animation={'pulse'}/>}
+            <Container
+                sx={{
+                    display: (loading ? 'none' : 'flex'),
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    width: '100%',
+                    padding: '0 !important'
+                }}>
+                <div id={"waveform" + randomId} style={{width: '100%'}}></div>
 
-            {wave && (
-                <IconButton size="large" sx={{height: '100%'}} color={"inherit"} onClick={play}>
-                    {playing ? (<PauseCircleIcon fontSize="inherit"/>) : (<PlayCircleIcon fontSize="inherit"/>)}
-                </IconButton>
-            )}
+                {wave && (
+                    <IconButton sx={{height: '100%', fontSize: '2em'}} color={"inherit"} onClick={play}>
+                        {playing ? (<PauseCircleIcon fontSize="inherit"/>) : (
+                            <PlayCircleIcon fontSize="inherit"/>)}
+                    </IconButton>
+                )}
 
-        </Container>
+            </Container>
+
+        </>
     );
 }
 

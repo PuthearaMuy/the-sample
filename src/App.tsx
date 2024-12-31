@@ -4,6 +4,7 @@ import {createTheme, ThemeProvider} from "@mui/material";
 import {ApplicationContext} from "./contexts/ApplicationContext.ts";
 import {AppContext} from "./contexts/model/AppContext.ts";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import {SnackbarProvider} from 'notistack';
 
 const theme = createTheme({
     cssVariables: true,
@@ -22,7 +23,9 @@ function App() {
         <ApplicationContext.Provider value={appContext}>
             <QueryClientProvider client={queryClient}>
                 <ThemeProvider theme={theme}>
-                    <Layout/>
+                    <SnackbarProvider maxSnack={5}>
+                        <Layout/>
+                    </SnackbarProvider>
                 </ThemeProvider>
             </QueryClientProvider>
         </ApplicationContext.Provider>

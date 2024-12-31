@@ -6,13 +6,23 @@ import {FilePathConstants} from "../constants/FilePathConstants.ts";
 import {LabelConstants} from "../constants/LabelConstants.ts";
 import {useContext} from "react";
 import {ApplicationContext} from "../contexts/ApplicationContext.ts";
+import {useSnackbar} from "notistack";
 
 function Layout() {
     const navigate = useNavigate();
     const context = useContext(ApplicationContext);
+    const {enqueueSnackbar, closeSnackbar} = useSnackbar();
+
+    function addSnackBar() {
+        const snackKey = enqueueSnackbar("Hi pm", {
+            autoHideDuration: 10_000,
+            anchorOrigin: {horizontal: 'right', vertical: 'bottom'},
+            SnackbarProps: {onClick: () => closeSnackbar(snackKey)}
+        })
+    }
 
     return (
-        <div style={{width:'100%',height:'100%', display: 'flex', flexDirection: 'column'}}>
+        <div style={{width: '100%', height: '100%', display: 'flex', flexDirection: 'column'}}>
             <AppBar position="sticky" color="transparent" sx={{backgroundColor: "var(--primary-background-color)"}}>
                 <Container maxWidth={false}>
                     <Toolbar disableGutters sx={{cursor: 'pointer', gap: '10px', width: '100%'}}>
@@ -37,7 +47,7 @@ function Layout() {
                             {context?.applicationName}
                         </Typography>
 
-                        <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'},  mx: '40px', gap: '2em'}}>
+                        <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}, mx: '40px', gap: '2em'}}>
                             {LabelConstants.pages.map((page) => (
                                 <Button
                                     key={page.label}
@@ -50,10 +60,13 @@ function Layout() {
                         </Box>
 
                         <SearchInput/>
+
+                        <Button onClick={addSnackBar}>Add new</Button>
                     </Toolbar>
                 </Container>
             </AppBar>
-            <div className={"content"} style={{width:'100%', height:'100%'}}>
+
+            <div className={"content"} style={{width: '100%', height: '100%'}}>
                 <Outlet/>
             </div>
         </div>

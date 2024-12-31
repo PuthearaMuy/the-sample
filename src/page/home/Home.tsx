@@ -1,4 +1,4 @@
-import {Avatar, Container, Typography} from "@mui/material";
+import {Avatar, Container, Grow, Stack, Typography} from "@mui/material";
 import {Sample} from "../../model/Sample.ts";
 import {SampleServiceAPI} from "../../service/SampleServiceAPI.ts";
 import AudioWave from "../../components/AudioWave.tsx";
@@ -18,46 +18,47 @@ function Home() {
         select: (data) => data.data.content,
     });
 
+    const timeout = (index: number) => {
+        return 500 * index;
+    }
+
     return (
         <>
             {isLoading && <Loading text="Loading..."/>}
 
-            <Container sx={{display: 'flex', flexDirection: 'column', gap: '2em', padding: '2em'}}>
-                {samples?.map((sample: Sample) => (
-                    <Container key={sample.id} maxWidth={"md"} className={'sample-container'}>
+            <Stack sx={{padding: '2em'}} spacing={2} justifyContent={"center"} alignItems={"center"}>
+                {samples?.map((sample: Sample, index: number) => (
+                        <Grow key={index} in={true} timeout={timeout(index + 1)} style={{transformOrigin: '0 0 0'}}>
+                            <Container key={sample.id} maxWidth={"md"} className={'sample-container'}>
 
-                        <Container sx={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            paddingBlock: '5px',
-                            paddingInline: '2px !important',
-                            gap: '15px'
-                        }}>
-                            <Container sx={{padding: '0 !important'}}>
-                                <Typography>{sample.title}</Typography>
-                                <Container
-                                    sx={{
-                                        display: 'flex',
-                                        flexDirection: 'row',
-                                        justifyContent: 'space-between',
-                                        padding: '0 !important'
-                                    }}>
-                                    <Typography sx={{color: 'var(--primary-bright-color)'}}>{sample.key}</Typography>
-                                    <Typography>{sample.createDate}</Typography>
-                                </Container>
-                            </Container>
-                            <Container sx={{width: 'unset', padding: '0 !important'}}>
-                                <Avatar alt="profile" src={meme} sx={{width: '60px', height: '60px'}}/>
-                            </Container>
-                        </Container>
+                                <Stack direction={"row"} justifyContent={"space-between"} alignItems={"center"}
+                                       alignContent={"center"} spacing={1}>
 
-                        <AudioWave id={sample.id} url={sample.url} onPlay={() => {
-                            setPlayingId(sample.id)
-                        }} isPlaying={sample.id === playingId}/>
-                    </Container>)
+                                    <Container sx={{padding: '0 !important'}}>
+                                        <Stack direction={"row"} justifyContent={"space-between"}>
+                                            <Typography>{sample.title}</Typography>
+                                            <Typography>{sample.createDate}</Typography>
+                                        </Stack>
+                                        <Stack direction={"row"} justifyContent={"space-between"}
+                                               color={"var(--primary-bright-color)"}>
+                                            <Typography>{sample.sampleType}</Typography>
+                                            <Typography>{sample.key}</Typography>
+                                        </Stack>
+                                    </Container>
+
+                                    <Container sx={{width: 'unset', padding: '0 !important'}}>
+                                        <Avatar alt="profile" src={meme} sx={{width: '60px', height: '60px'}}/>
+                                    </Container>
+                                </Stack>
+
+                                <AudioWave id={sample.id} url={sample.url} onPlay={() => {
+                                    setPlayingId(sample.id)
+                                }} isPlaying={sample.id === playingId}/>
+                            </Container>
+                        </Grow>
+                    )
                 )}
-            </Container>
+            </Stack>
         </>
     )
 }
