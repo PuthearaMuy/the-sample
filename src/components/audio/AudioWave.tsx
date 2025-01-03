@@ -1,5 +1,5 @@
 import WaveSurfer from "wavesurfer.js";
-import {SampleServiceAPI} from "../service/SampleServiceAPI.ts";
+import {SampleServiceAPI} from "../../service/SampleServiceAPI.ts";
 import {useEffect, useRef, useState} from "react";
 import {AxiosResponse} from "axios";
 import {Container, IconButton, Skeleton} from "@mui/material";

@@ -1,6 +1,7 @@
 import {Container, Stack} from "@mui/material";
 import FileDrop from "../../components/file/FileDrop.tsx";
 import {useState} from "react";
+import AudioPreview from "../../components/audio/AudioPreview.tsx";
 
 function Upload() {
 
@@ -8,10 +9,14 @@ function Upload() {
 
     return (
         <>
-            <Container sx={{height: "90px"}}>
+            <Container sx={{height: "100px"}}>
                 {
                     audioFile ?
-                        (<h1>HI</h1>)
+                        (
+                            <Stack>
+                                <AudioPreview file={audioFile} onClose={() => setAudioFile(undefined)} />
+                            </Stack>
+                        )
                         : (<FileDrop label={"please drop your stolen file 🔪🔪"}
                                      onUpload={(file: File) => setAudioFile(file)}/>)
                 }

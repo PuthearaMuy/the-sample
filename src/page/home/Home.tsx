@@ -1,7 +1,7 @@
 import {Avatar, Container, Grow, Stack, Typography} from "@mui/material";
 import {Sample} from "../../model/Sample.ts";
 import {SampleServiceAPI} from "../../service/SampleServiceAPI.ts";
-import AudioWave from "../../components/AudioWave.tsx";
+import AudioWave from "../../components/audio/AudioWave.tsx";
 import meme from "../../assets/meme.jpg";
 import "./home.css";
 import Loading from "../../components/Loading.tsx";
