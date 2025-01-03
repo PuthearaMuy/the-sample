@@ -1,6 +1,6 @@
 import WaveSurfer from "wavesurfer.js";
 import {SampleServiceAPI} from "../service/SampleServiceAPI.ts";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {AxiosResponse} from "axios";
 import {Container, IconButton, Skeleton} from "@mui/material";
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
@@ -14,18 +14,17 @@ interface Props {
 }
 
 function AudioWave({id, url, isPlaying, onPlay}: Props) {
-    const [wave, setWave] = useState<WaveSurfer>(null);
+    const [wave, setWave] = useState<WaveSurfer | undefined>(undefined);
     const [playing, setPlaying] = useState(false);
     const [loading, setLoading] = useState(true);
-
-    const randomId = Math.random().toString(10).substring(2);
+    const randomIdRef = useRef<string>(Math.random().toString(10).substring(2) + id);
 
     useEffect(() => {
 
         SampleServiceAPI.getInstance().getSampleAudio(url).then((response: AxiosResponse<Blob>) => {
             const url = URL.createObjectURL(response.data);
             const waveSurfer = WaveSurfer.create({
-                container: "#waveform" + randomId,
+                container: "#waveform" + randomIdRef.current,
                 waveColor: '#ffffff',
                 progressColor: '#7fdeff',
                 url: url,
@@ -36,7 +35,7 @@ function AudioWave({id, url, isPlaying, onPlay}: Props) {
 
             setWave(waveSurfer);
         })
-    }, []);
+    }, [url]);
 
     useEffect(() => {
         if (wave && wave.isPlaying() && !isPlaying) {
@@ -72,7 +71,7 @@ function AudioWave({id, url, isPlaying, onPlay}: Props) {
                     width: '100%',
                     padding: '0 !important'
                 }}>
-                <div id={"waveform" + randomId} style={{width: '100%'}}></div>
+                <div id={"waveform" + randomIdRef.current} style={{width: '100%'}}></div>
 
                 {wave && (
                     <IconButton sx={{height: '100%', fontSize: '2em'}} color={"inherit"} onClick={play}>

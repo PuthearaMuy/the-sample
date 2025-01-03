@@ -6,6 +6,10 @@ export class LabelConstants {
             path: "/home",
         },
         {
+            label: "Upload",
+            path: "/upload",
+        },
+        {
             label: "About",
             path: "/about",
         }

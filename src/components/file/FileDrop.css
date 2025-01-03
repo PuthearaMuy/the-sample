@@ -1,0 +1,18 @@
+.file-drop-container {
+    border-radius: 8px;
+    background-color: var(--secondary-background-color);
+    cursor: pointer;
+    height: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    word-break: break-word;
+
+    &:hover {
+        background-color: var(--secondary-hover-background-color);
+    }
+
+    &.drag-on {
+        background-color: var(--secondary-hover-background-color);
+    }
+}

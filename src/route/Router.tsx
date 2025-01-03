@@ -3,6 +3,7 @@ import App from "../App.tsx";
 import About from "../page/About.tsx";
 import Home from "../page/home/Home.tsx";
 import NotFoundPage from "../layout/NotfoundPage.tsx";
+import Upload from "../page/upload/Upload.tsx";
 
 const routes: RouteObject[] = [
     {
@@ -21,6 +22,10 @@ const routes: RouteObject[] = [
             {
                 path: "about",
                 element: <About/>
+            },
+            {
+                path: "upload",
+                element: <Upload/>
             },
             {
                 path: "/*",

@@ -22,7 +22,7 @@ function Layout() {
     }
 
     return (
-        <div style={{width: '100%', height: '100%', display: 'flex', flexDirection: 'column'}}>
+        <div style={{display: 'flex', flexDirection: 'column', width: '100%', height: '100%'}}>
             <AppBar position="sticky" color="transparent" sx={{backgroundColor: "var(--primary-background-color)"}}>
                 <Container maxWidth={false}>
                     <Toolbar disableGutters sx={{cursor: 'pointer', gap: '10px', width: '100%'}}>
@@ -61,12 +61,12 @@ function Layout() {
 
                         <SearchInput/>
 
-                        <Button onClick={addSnackBar}>Add new</Button>
+                        <Button onClick={addSnackBar} color={'primary'}>MSG</Button>
                     </Toolbar>
                 </Container>
             </AppBar>
 
-            <div className={"content"} style={{width: '100%', height: '100%'}}>
+            <div id={"content"}>
                 <Outlet/>
             </div>
         </div>

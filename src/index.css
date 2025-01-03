@@ -35,6 +35,11 @@ body {
     margin: 0 auto;
 }
 
+#root {
+    height: inherit;
+    width: inherit;
+}
+
 /* width */
 ::-webkit-scrollbar {
     width: 10px;

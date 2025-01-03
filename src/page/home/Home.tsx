@@ -15,7 +15,9 @@ function Home() {
     const {data: samples, isLoading} = useQuery({
         queryKey: ["sampleKey"],
         queryFn: () => SampleServiceAPI.getInstance().getSamples(),
-        select: (data) => data.data.content,
+        select: (data) => {
+            return data.data.content;
+        },
     });
 
     const timeout = (index: number) => {
@@ -26,39 +28,50 @@ function Home() {
         <>
             {isLoading && <Loading text="Loading..."/>}
 
-            <Stack sx={{padding: '2em'}} spacing={2} justifyContent={"center"} alignItems={"center"}>
-                {samples?.map((sample: Sample, index: number) => (
-                        <Grow key={index} in={true} timeout={timeout(index + 1)} style={{transformOrigin: '0 0 0'}}>
-                            <Container key={sample.id} maxWidth={"md"} className={'sample-container'}>
+            <Stack direction={'row'} justifyContent={'space-between'} spacing={2}>
+                <Stack width={'10%'}>
+                    left
+                </Stack>
+                <Stack width={'80%'}>
+                    <Stack sx={{padding: '2em'}} spacing={2} justifyContent={"center"} alignItems={"center"}>
+                        {samples?.map((sample: Sample, index: number) => (
+                                <Grow key={index} in={true} timeout={timeout(index + 1)} style={{transformOrigin: '0 0 0'}}>
+                                    <Container key={sample.id} maxWidth={"md"} className={'sample-container'}>
 
-                                <Stack direction={"row"} justifyContent={"space-between"} alignItems={"center"}
-                                       alignContent={"center"} spacing={1}>
+                                        <Stack direction={"row"} justifyContent={"space-between"} alignItems={"center"}
+                                               alignContent={"center"} spacing={1}>
 
-                                    <Container sx={{padding: '0 !important'}}>
-                                        <Stack direction={"row"} justifyContent={"space-between"}>
-                                            <Typography>{sample.title}</Typography>
-                                            <Typography>{sample.createDate}</Typography>
+                                            <Container sx={{padding: '0 !important'}}>
+                                                <Stack direction={"row"} justifyContent={"space-between"}>
+                                                    <Typography>{sample.title}</Typography>
+                                                    <Typography>{sample.createDate}</Typography>
+                                                </Stack>
+                                                <Stack direction={"row"} justifyContent={"space-between"}
+                                                       color={"var(--primary-bright-color)"}>
+                                                    <Typography>{sample.sampleType}</Typography>
+                                                    <Typography>{sample.key}</Typography>
+                                                </Stack>
+                                            </Container>
+
+                                            <Container sx={{width: 'unset', padding: '0 !important'}}>
+                                                <Avatar alt="profile" src={meme} sx={{width: '60px', height: '60px'}}/>
+                                            </Container>
                                         </Stack>
-                                        <Stack direction={"row"} justifyContent={"space-between"}
-                                               color={"var(--primary-bright-color)"}>
-                                            <Typography>{sample.sampleType}</Typography>
-                                            <Typography>{sample.key}</Typography>
-                                        </Stack>
-                                    </Container>
 
-                                    <Container sx={{width: 'unset', padding: '0 !important'}}>
-                                        <Avatar alt="profile" src={meme} sx={{width: '60px', height: '60px'}}/>
+                                        <AudioWave id={sample.id} url={sample.url} onPlay={() => {
+                                            setPlayingId(sample.id)
+                                        }} isPlaying={sample.id === playingId}/>
                                     </Container>
-                                </Stack>
-
-                                <AudioWave id={sample.id} url={sample.url} onPlay={() => {
-                                    setPlayingId(sample.id)
-                                }} isPlaying={sample.id === playingId}/>
-                            </Container>
-                        </Grow>
-                    )
-                )}
+                                </Grow>
+                            )
+                        )}
+                    </Stack>
+                </Stack>
+                <Stack width={'10%'}>
+                    right
+                </Stack>
             </Stack>
+
         </>
     )
 }

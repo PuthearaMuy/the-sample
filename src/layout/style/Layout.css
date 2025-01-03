@@ -1,3 +1,6 @@
-.toolbar h1 {
-    color: red;
+#content {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: 2em;
 }
