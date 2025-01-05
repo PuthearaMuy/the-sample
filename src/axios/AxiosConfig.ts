@@ -1,4 +1,15 @@
 import axios from "axios";
+import {store} from "../state/store/store.ts";
+import {ApplicationState} from "../state/ApplicationState.ts";
+
+let application: ApplicationState | undefined = undefined;
+
+store.subscribe(() => {
+    const applicationState = store.getState().application;
+    if (applicationState) {
+        application = applicationState;
+    }
+});
 
 const axiosInstance = axios.create({
     baseURL: "",
@@ -9,10 +20,8 @@ const axiosInstance = axios.create({
     }
 })
 
-const token = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJDaG1Oa0VhMmR6TUJOc0ZGUEdVM0hRcko5VkZOVDZYQi1seDFRZlpVMHZrIn0.eyJleHAiOjE3MzUyOTcxOTQsImlhdCI6MTczNTI5NjI5NCwianRpIjoiYjE0YjllNTMtMWRhOC00OTkxLThlMjMtNzA0N2YwNGNlMTNjIiwiaXNzIjoiaHR0cHM6Ly9kZXYyLmFsbHdlYi5jb20ua2g6ODA3MC9yZWFsbXMvZGVmYXVsdC1jZXJ0aWduYS12ZXJpZmljYXRpb24taWQiLCJzdWIiOiI2ZGViYWVlMS1iODJiLTQ5NGYtODUxZC05NmYxMDkxNTg0ZTYiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJjdmktcHJvZmlsZSIsInNlc3Npb25fc3RhdGUiOiJjMDM1YTU2ZS1lYmZkLTQ2ZDctOTg1ZC0xZDVjNTc2ZTBkZjIiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbIioiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImRlZmF1bHQtcm9sZXMtZGVmYXVsdC1jZXJ0aWduYS12ZXJpZmljYXRpb24taWQiXX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsInNpZCI6ImMwMzVhNTZlLWViZmQtNDZkNy05ODVkLTFkNWM1NzZlMGRmMiIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyc3RMb2dpbiI6ImZhbHNlIiwibmFtZSI6IlB1dGhlYXJhIE1VWSIsIlVTRVJfSUQiOiI0IiwicHJlZmVycmVkX3VzZXJuYW1lIjoicHV0aGVhcmEubXV5QGFsbHdlYi5jb20ua2giLCJnaXZlbl9uYW1lIjoiUHV0aGVhcmEiLCJmYW1pbHlfbmFtZSI6Ik1VWSIsImVtYWlsIjoicHV0aGVhcmEubXV5QGFsbHdlYi5jb20ua2gifQ.LhRHrKKoSs-iq3D8uGGiezzGnzlurqn4kfP8_VJaZ00-Sf_Ap95OJeCtnvCujiqteIX-A_Ypb_GwTY0H_CRnBVA3W6tJ5tusWrZdr0KIqh3IM2y1HynVNYVwGP1qsVVijKJ-y2cTiY4zemjTJhKArcDITdsOwDsAHo7UTgZSOtjz30TuEtc62BAaON_tfQYaO4seD1OLEPmNZFXi7pA1fS64E2S8eRGK-AtwAV1wKo4P9c1N_4DzjXfJLEiIqdA5ExQOXi03o7MEO3weRp0vKzsYZQeDlSRz7Q-upZ7nQAgLPo-temaXLO1giTYqPX4p3Dt-lT5K7B7u_9jSZR8XzA";
-
 axiosInstance.interceptors.request.use((config) => {
-    config.headers['Authorization'] = 'Bearer ' + token;
+    config.headers['Authorization'] = 'Bearer ' + application?.accessToken;
     return config;
 });
 

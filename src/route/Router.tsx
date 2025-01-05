@@ -4,6 +4,7 @@ import About from "../page/About.tsx";
 import Home from "../page/home/Home.tsx";
 import NotFoundPage from "../layout/NotfoundPage.tsx";
 import Upload from "../page/upload/Upload.tsx";
+import Test from "../page/Test.tsx";
 
 const routes: RouteObject[] = [
     {
@@ -26,6 +27,10 @@ const routes: RouteObject[] = [
             {
                 path: "upload",
                 element: <Upload/>
+            },
+            {
+                path: "test",
+                element: <Test/>
             },
             {
                 path: "/*",

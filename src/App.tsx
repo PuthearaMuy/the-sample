@@ -5,6 +5,8 @@ import {ApplicationContext} from "./contexts/ApplicationContext.ts";
 import {AppContext} from "./contexts/model/AppContext.ts";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {SnackbarProvider} from 'notistack';
+import {Provider} from "react-redux";
+import {store} from "./state/store/store.ts";
 
 const theme = createTheme({
     cssVariables: true,
@@ -20,15 +22,17 @@ const appContext: AppContext = {
 
 function App() {
     return (
-        <ApplicationContext.Provider value={appContext}>
-            <QueryClientProvider client={queryClient}>
-                <ThemeProvider theme={theme}>
-                    <SnackbarProvider maxSnack={5}>
-                        <Layout/>
-                    </SnackbarProvider>
-                </ThemeProvider>
-            </QueryClientProvider>
-        </ApplicationContext.Provider>
+        <Provider store={store}>
+            <ApplicationContext.Provider value={appContext}>
+                <QueryClientProvider client={queryClient}>
+                    <ThemeProvider theme={theme}>
+                        <SnackbarProvider maxSnack={5}>
+                            <Layout/>
+                        </SnackbarProvider>
+                    </ThemeProvider>
+                </QueryClientProvider>
+            </ApplicationContext.Provider>
+        </Provider>
     )
 }
 
