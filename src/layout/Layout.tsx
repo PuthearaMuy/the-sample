@@ -22,7 +22,7 @@ function Layout() {
     }
 
     return (
-        <div style={{display: 'flex', flexDirection: 'column', width: '100%', height: '100%'}}>
+        <div style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
             <AppBar position="sticky" color="transparent" sx={{backgroundColor: "var(--primary-background-color)"}}>
                 <Container maxWidth={false}>
                     <Toolbar disableGutters sx={{cursor: 'pointer', gap: '10px', width: '100%'}}>

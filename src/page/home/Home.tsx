@@ -33,7 +33,7 @@ function Home() {
                     left
                 </Stack>
                 <Stack width={'80%'}>
-                    <Stack sx={{padding: '2em'}} spacing={2} justifyContent={"center"} alignItems={"center"}>
+                    <Stack sx={{paddingInline: '2em'}} spacing={2} justifyContent={"center"} alignItems={"center"}>
                         {samples?.map((sample: Sample, index: number) => (
                                 <Grow key={index} in={true} timeout={timeout(index + 1)} style={{transformOrigin: '0 0 0'}}>
                                     <Container key={sample.id} maxWidth={"md"} className={'sample-container'}>

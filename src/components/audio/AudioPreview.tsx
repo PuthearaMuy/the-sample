@@ -2,25 +2,28 @@ import {useEffect, useState} from "react";
 import WaveSurfer from "wavesurfer.js";
 import PauseCircleIcon from "@mui/icons-material/PauseCircle";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
-import {IconButton, Stack} from "@mui/material";
+import {IconButton, Skeleton, Stack} from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 
 function AudioPreview({file, onClose}: { file: File, onClose?: () => void }) {
 
     const [wave, setWave] = useState<WaveSurfer | undefined>(undefined);
-    const [playing, setPlaying] = useState(false)
+    const [playing, setPlaying] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const url = URL.createObjectURL(file);
-        const waveSuffer = WaveSurfer.create({
+        const waveSurfer = WaveSurfer.create({
             container: "#audio-preview",
             url: url,
             waveColor: '#ffffff',
             progressColor: '#7fdeff',
             height: 100,
         })
+        waveSurfer.on(('finish'), () => setPlaying(false))
+        waveSurfer.on(('ready'), () => setLoading(false));
 
-        setWave(waveSuffer);
+        setWave(waveSurfer);
     }, [file]);
 
 
@@ -38,25 +41,28 @@ function AudioPreview({file, onClose}: { file: File, onClose?: () => void }) {
 
     return (
         <>
-            <Stack direction={'row'} spacing={2} alignItems={'center'} width={"100%"}>
-                {
-                    wave && (
+            <Stack direction={'row'} spacing={2} alignItems={'center'}
+                   sx={{backgroundColor: 'var(--secondary-background-color)', borderRadius: '8px', paddingInline: '10px'}}>
 
-                        <IconButton sx={{height: '100%', fontSize: '30px', marginLeft: '0 !important'}} color={"inherit"}
+                {loading && <Skeleton height={"100px"} width={'100%'} animation={'pulse'}/>}
+                <div id={"audio-preview"}
+                     style={{width: '100%', height: '100%', display: (loading ? 'none' : 'block')}}></div>
+
+                {wave && (
+                    <Stack>
+                        <IconButton sx={{height: '100%', fontSize: '30px', marginLeft: '0 !important'}}
+                                    color={"inherit"}
+                                    onClick={onClose}>
+                            <CloseIcon fontSize="inherit" color={'warning'}/>
+                        </IconButton>
+
+                        <IconButton sx={{height: '100%', fontSize: '30px', marginLeft: '0 !important'}}
+                                    color={"inherit"}
                                     onClick={play}>
                             {playing ? (<PauseCircleIcon fontSize="inherit"/>) : (
                                 <PlayCircleIcon fontSize="inherit"/>)}
                         </IconButton>
-                    )
-                }
-
-                <div id={"audio-preview"} style={{width: '100%', height: '100%'}}></div>
-
-                {wave && (
-                    <IconButton sx={{height: '100%', fontSize: '30px', marginLeft: '0 !important'}} color={"inherit"}
-                                onClick={onClose}>
-                        <CloseIcon fontSize="inherit" color={'warning'}/>
-                    </IconButton>
+                    </Stack>
                 )}
             </Stack>
 
