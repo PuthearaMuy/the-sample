@@ -42,7 +42,7 @@ function AudioPreview({file, onClose}: { file: File, onClose?: () => void }) {
     return (
         <>
             <Stack direction={'row'} spacing={2} alignItems={'center'}
-                   sx={{backgroundColor: 'var(--secondary-background-color)', borderRadius: '8px', paddingInline: '10px'}}>
+                   sx={{backgroundColor: 'var(--secondary-background-color)', borderRadius: '8px', padding: '10px'}}>
 
                 {loading && <Skeleton height={"100px"} width={'100%'} animation={'pulse'}/>}
                 <div id={"audio-preview"}
