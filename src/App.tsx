@@ -8,6 +8,7 @@ import {SnackbarProvider} from 'notistack';
 import {Provider} from "react-redux";
 import {store} from "./state/store/store.ts";
 import {outlinedInputClasses} from '@mui/material/OutlinedInput';
+import ApplicationStartUp from "./page/ApplicationStartUp.tsx";
 
 const theme = createTheme({
     cssVariables: true,
@@ -31,7 +32,8 @@ const theme = createTheme({
                     outline: 'none',
                     ['']: {
                         color: 'var(--primary-color)',
-                    }
+                    },
+                    borderRadius: '7px'
                 },
             },
         }
@@ -46,15 +48,17 @@ const appContext: AppContext = {
 function App() {
     return (
         <Provider store={store}>
-            <ApplicationContext.Provider value={appContext}>
-                <QueryClientProvider client={queryClient}>
-                    <ThemeProvider theme={theme}>
-                        <SnackbarProvider maxSnack={5}>
-                            <Layout/>
-                        </SnackbarProvider>
-                    </ThemeProvider>
-                </QueryClientProvider>
-            </ApplicationContext.Provider>
+            <ApplicationStartUp>
+                <ApplicationContext.Provider value={appContext}>
+                    <QueryClientProvider client={queryClient}>
+                        <ThemeProvider theme={theme}>
+                            <SnackbarProvider maxSnack={5}>
+                                <Layout/>
+                            </SnackbarProvider>
+                        </ThemeProvider>
+                    </QueryClientProvider>
+                </ApplicationContext.Provider>
+            </ApplicationStartUp>
         </Provider>
     )
 }

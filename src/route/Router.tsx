@@ -5,6 +5,7 @@ import Home from "../page/home/Home.tsx";
 import NotFoundPage from "../layout/NotfoundPage.tsx";
 import Upload from "../page/upload/Upload.tsx";
 import Test from "../page/Test.tsx";
+import LoginRedirect from "../page/login/LoginRedirect.tsx";
 
 const routes: RouteObject[] = [
     {
@@ -31,6 +32,14 @@ const routes: RouteObject[] = [
             {
                 path: "test",
                 element: <Test/>
+            },
+            {
+                path: "login",
+                element: null,
+                children: [{
+                    path: "redirect",
+                    element: <LoginRedirect/>
+                }]
             },
             {
                 path: "/*",

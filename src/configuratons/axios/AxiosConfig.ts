@@ -1,6 +1,6 @@
 import axios from "axios";
-import {store} from "../state/store/store.ts";
-import {ApplicationState} from "../state/ApplicationState.ts";
+import {store} from "../../state/store/store.ts";
+import {ApplicationState} from "../../state/ApplicationState.ts";
 
 let application: ApplicationState | undefined = undefined;
 

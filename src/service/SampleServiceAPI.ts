@@ -1,4 +1,4 @@
-import axiosInstance from "../axios/AxiosConfig.ts";
+import axiosInstance from "../configuratons/axios/AxiosConfig.ts";
 
 export class SampleServiceAPI {
     private readonly baseUrl: string;

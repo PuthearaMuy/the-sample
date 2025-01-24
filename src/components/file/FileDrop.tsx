@@ -5,10 +5,12 @@ import "./FileDrop.css"
 
 interface Props {
     label: string;
+    acceptType?: string;
     onUpload?: (file: File) => void;
+    validation?: (file: File) => boolean;
 }
 
-function FileDrop({label, onUpload}: Props) {
+function FileDrop({label, acceptType, onUpload, validation}: Props) {
 
     const fileInput = useRef<HTMLInputElement | null>(null);
     const div = useRef<HTMLDivElement | null>(null);
@@ -37,7 +39,12 @@ function FileDrop({label, onUpload}: Props) {
         if (e.dataTransfer && e.dataTransfer.files.length > 0) {
             const file = e.dataTransfer.files[0];
             if (file) {
-                if (file.type.includes("audio/") && onUpload) {
+                if (validation) {
+                    if (!validation(file)) {
+                        return;
+                    }
+                }
+                if (onUpload) {
                     onUpload(file);
                 }
             }
@@ -59,11 +66,11 @@ function FileDrop({label, onUpload}: Props) {
 
     return (
         <Stack ref={div} onClick={openFile} onDragOver={onDrag} onDragLeave={onDragLeave}
-               onDrop={onDrop} className={'file-drop-container'}>
+               onDrop={onDrop} className={'file-drop-container'} width={'100%'} height={'100%'}>
 
             <Typography sx={{fontFamily: 'var(--merinda-font)'}}>{label}</Typography>
 
-            <input ref={fileInput} hidden={true} type={"file"} accept={"audio/*"} onChange={onChangeFile}/>
+            <input ref={fileInput} hidden={true} type={"file"} accept={acceptType} onChange={onChangeFile}/>
         </Stack>
     );
 }

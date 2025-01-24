@@ -7,10 +7,13 @@ import {LabelConstants} from "../constants/LabelConstants.ts";
 import {useContext} from "react";
 import {ApplicationContext} from "../contexts/ApplicationContext.ts";
 import {useSnackbar} from "notistack";
+import {useAppSelector} from "../state/store/store.ts";
+import {AuthenticationAPI} from "../service/AuthenticationAPI.ts";
 
 function Layout() {
     const navigate = useNavigate();
     const context = useContext(ApplicationContext);
+    const applicationStore = useAppSelector(state => state.application);
     const {enqueueSnackbar, closeSnackbar} = useSnackbar();
 
     function addSnackBar() {
@@ -19,6 +22,10 @@ function Layout() {
             anchorOrigin: {horizontal: 'right', vertical: 'bottom'},
             SnackbarProps: {onClick: () => closeSnackbar(snackKey)}
         })
+    }
+
+    function login() {
+        window.location.href = AuthenticationAPI.getGoogleAuthenticationUrl();
     }
 
     return (
@@ -61,7 +68,15 @@ function Layout() {
 
                         <SearchInput/>
 
-                        <Button onClick={addSnackBar} color={'primary'}>MSG</Button>
+                        {
+                            applicationStore.isAuthenticated ? (
+                                <Button onClick={addSnackBar} color={'primary'}>MSG</Button>
+                            ) : (
+                                <Button onClick={login} color={'primary'}
+                                        sx={{textTransform: 'capitalize'}}>Login</Button>
+                            )
+                        }
+
                     </Toolbar>
                 </Container>
             </AppBar>
