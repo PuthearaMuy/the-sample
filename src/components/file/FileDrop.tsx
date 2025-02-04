@@ -1,4 +1,4 @@
-import {Stack, Typography} from "@mui/material";
+import {Stack, SxProps, Typography} from "@mui/material";
 import {ChangeEvent, DragEvent, useRef} from 'react';
 
 import "./FileDrop.css"
@@ -8,9 +8,10 @@ interface Props {
     acceptType?: string;
     onUpload?: (file: File) => void;
     validation?: (file: File) => boolean;
+    sx?: SxProps;
 }
 
-function FileDrop({label, acceptType, onUpload, validation}: Props) {
+function FileDrop({label, acceptType, onUpload, validation, sx}: Props) {
 
     const fileInput = useRef<HTMLInputElement | null>(null);
     const div = useRef<HTMLDivElement | null>(null);
@@ -66,7 +67,7 @@ function FileDrop({label, acceptType, onUpload, validation}: Props) {
 
     return (
         <Stack ref={div} onClick={openFile} onDragOver={onDrag} onDragLeave={onDragLeave}
-               onDrop={onDrop} className={'file-drop-container'} width={'100%'} height={'100%'}>
+               onDrop={onDrop} className={'file-drop-container'} width={'100%'} height={'100%'} sx={sx}>
 
             <Typography sx={{fontFamily: 'var(--merinda-font)'}}>{label}</Typography>
 

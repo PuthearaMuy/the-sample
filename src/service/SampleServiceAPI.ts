@@ -1,4 +1,5 @@
 import axiosInstance from "../configuratons/axios/AxiosConfig.ts";
+import {AxiosProgressEvent} from "axios";
 
 export class SampleServiceAPI {
     private readonly baseUrl: string;
@@ -10,17 +11,25 @@ export class SampleServiceAPI {
 
     public static getInstance(): SampleServiceAPI {
         if (!SampleServiceAPI.instance) {
-            SampleServiceAPI.instance = new SampleServiceAPI("/src/assets")
+            SampleServiceAPI.instance = new SampleServiceAPI("http://localhost:8002/api");
         }
         return SampleServiceAPI.instance;
     }
 
     getSamples() {
-        return axiosInstance.get(this.baseUrl + "/sample/sample.json");
+        return axiosInstance.get(this.baseUrl + "/v1/sample");
     }
 
     getSampleAudio(url: string) {
+        return axiosInstance.get(url, {responseType: 'blob'});
+    }
 
-        return axiosInstance.get(this.baseUrl + url, {responseType: 'blob'});
+    uploadSample(formData: FormData, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void) {
+        return axiosInstance.post(this.baseUrl + "/v1/sample", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+            onUploadProgress
+        });
     }
 }

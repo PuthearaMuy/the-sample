@@ -11,6 +11,8 @@ export class UserServiceAPI {
     }
 
     public static getUserProfilePicture(userId?: number) {
-        return this.axios.get(BackendConfigurationProperty.getUserManagementFullPath() + env.VITE_USER_PROFILE_PICTURE + (userId && `?user_id=${userId}`));
+        return this.axios.get(BackendConfigurationProperty.getUserManagementFullPath() + env.VITE_USER_PROFILE_PICTURE + (userId ? `?user_id=${userId}`:''), {
+            responseType: 'blob'
+        });
     }
 }

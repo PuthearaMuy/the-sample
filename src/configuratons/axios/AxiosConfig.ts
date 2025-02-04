@@ -1,6 +1,7 @@
 import axios from "axios";
 import {store} from "../../state/store/store.ts";
 import {ApplicationState} from "../../state/ApplicationState.ts";
+import {ApplicationConstants} from "../../constants/ApplicationConstants.ts";
 
 let application: ApplicationState | undefined = undefined;
 
@@ -21,7 +22,16 @@ const axiosInstance = axios.create({
 })
 
 axiosInstance.interceptors.request.use((config) => {
-    config.headers['Authorization'] = 'Bearer ' + application?.accessToken;
+    if (application) {
+        if (application.accessToken) {
+            config.headers['Authorization'] = 'Bearer ' + application?.accessToken;
+        }
+        if (application.sessionId) {
+            config.headers[ApplicationConstants.SESSION_ID] = application.sessionId;
+
+        }
+    }
+
     return config;
 });
 

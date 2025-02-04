@@ -1,35 +1,38 @@
 import "./style/Layout.css";
-import {AppBar, Box, Button, Container, Toolbar, Typography} from "@mui/material";
+import {AppBar, Avatar, Box, Button, Container, Toolbar, Typography} from "@mui/material";
 import {Outlet, useNavigate} from "react-router-dom";
 import SearchInput from "../components/Search.tsx";
 import {FilePathConstants} from "../constants/FilePathConstants.ts";
 import {LabelConstants} from "../constants/LabelConstants.ts";
-import {useContext} from "react";
+import {useContext, useEffect, useState} from "react";
 import {ApplicationContext} from "../contexts/ApplicationContext.ts";
-import {useSnackbar} from "notistack";
 import {useAppSelector} from "../state/store/store.ts";
 import {AuthenticationAPI} from "../service/AuthenticationAPI.ts";
+import {UserServiceAPI} from "../service/UserServiceAPI.ts";
 
 function Layout() {
     const navigate = useNavigate();
     const context = useContext(ApplicationContext);
-    const applicationStore = useAppSelector(state => state.application);
-    const {enqueueSnackbar, closeSnackbar} = useSnackbar();
+    const userState = useAppSelector(state => state.user);
+    const [profileImage, setProfileImage] = useState<string | undefined>(undefined)
 
-    function addSnackBar() {
-        const snackKey = enqueueSnackbar("Hi pm", {
-            autoHideDuration: 10_000,
-            anchorOrigin: {horizontal: 'right', vertical: 'bottom'},
-            SnackbarProps: {onClick: () => closeSnackbar(snackKey)}
-        })
-    }
+    useEffect(() => {
+        if (userState.profileName) {
+            UserServiceAPI.getUserProfilePicture().then((res) => {
+                const url = URL.createObjectURL(res.data);
+                if (url) {
+                    setProfileImage(url)
+                }
+            })
+        }
+    }, [userState])
 
     function login() {
         window.location.href = AuthenticationAPI.getGoogleAuthenticationUrl();
     }
 
     return (
-        <div style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
+        <div style={{display: 'flex', flexDirection: 'column', width: '100%', height: '100%'}}>
             <AppBar position="sticky" color="transparent" sx={{backgroundColor: "var(--primary-background-color)"}}>
                 <Container maxWidth={false}>
                     <Toolbar disableGutters sx={{cursor: 'pointer', gap: '10px', width: '100%'}}>
@@ -69,8 +72,8 @@ function Layout() {
                         <SearchInput/>
 
                         {
-                            applicationStore.isAuthenticated ? (
-                                <Button onClick={addSnackBar} color={'primary'}>MSG</Button>
+                            profileImage ? (
+                                <Avatar alt="Profile" src={profileImage}/>
                             ) : (
                                 <Button onClick={login} color={'primary'}
                                         sx={{textTransform: 'capitalize'}}>Login</Button>
