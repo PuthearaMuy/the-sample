@@ -32,4 +32,8 @@ export class SampleServiceAPI {
             onUploadProgress
         });
     }
+
+    getSampleLogo(logo: string) {
+        return axiosInstance.get(this.baseUrl + "/v1/sample/logo/" + logo, {responseType: 'blob'});
+    }
 }

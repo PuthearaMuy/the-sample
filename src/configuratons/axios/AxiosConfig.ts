@@ -14,7 +14,6 @@ store.subscribe(() => {
 
 const axiosInstance = axios.create({
     baseURL: "",
-    timeout: 50000,
     headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',

@@ -8,4 +8,5 @@ export interface Sample {
     type: string,
     url: string
     createDate: number
+    logo: string,
 }

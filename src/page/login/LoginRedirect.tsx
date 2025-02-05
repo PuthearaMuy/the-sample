@@ -1,10 +1,10 @@
-import {useSearchParams} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import {useAppDispatch} from "../../state/store/store.ts";
 import {setIsAuthenticated, setSessionId, setToken} from "../../state/slice/ApplicationSlice.ts";
 import {useEffect} from "react";
 import {UserServiceAPI} from "../../service/UserServiceAPI.ts";
 import {ParameterConstants} from "../../constants/ParameterConstants.ts";
-import {CircularProgress, Stack} from "@mui/material";
+import {CircularProgress, Stack, Typography} from "@mui/material";
 import {IUser, setUser} from "../../state/slice/UserSlice.ts";
 
 function LoginRedirect() {
@@ -13,6 +13,7 @@ function LoginRedirect() {
     const [searchParams] = useSearchParams();
     const token = searchParams.get(ParameterConstants.TOKEN);
     const sessionId = searchParams.get(ParameterConstants.SESSION_ID);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (token) {
@@ -26,9 +27,13 @@ function LoginRedirect() {
             const user = value.data as IUser;
             dispatch(setUser(user));
             dispatch(setIsAuthenticated(true));
+            navigate('/home');
         });
-    }, [token, sessionId, dispatch]);
-    return (<Stack justifyContent={'center'} alignItems={'center'} height={"100%"}><CircularProgress/></Stack>)
+    }, [token, sessionId, dispatch, navigate]);
+    return (<Stack justifyContent={'center'} alignItems={'center'} height={"100%"}>
+        <Typography>Please wait a while.... 🔪🔪🔪</Typography>
+        <CircularProgress/>
+    </Stack>)
 }
 
 export default LoginRedirect;

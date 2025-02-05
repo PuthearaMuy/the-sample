@@ -44,7 +44,9 @@ function AudioWave({id, url, isPlaying, onPlay}: Props) {
         }
     }, [isPlaying, wave]);
 
-    function play() {
+    function play(event: MouseEvent) {
+        event.preventDefault();
+        event.stopPropagation();
         if (wave) {
             if (playing) {
                 wave.pause();

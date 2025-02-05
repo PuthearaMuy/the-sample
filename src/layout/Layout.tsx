@@ -1,5 +1,5 @@
 import "./style/Layout.css";
-import {AppBar, Avatar, Box, Button, Container, Toolbar, Typography} from "@mui/material";
+import {AppBar, Box, Button, Container, LinearProgress, Toolbar, Typography} from "@mui/material";
 import {Outlet, useNavigate} from "react-router-dom";
 import SearchInput from "../components/Search.tsx";
 import {FilePathConstants} from "../constants/FilePathConstants.ts";
@@ -7,13 +7,15 @@ import {LabelConstants} from "../constants/LabelConstants.ts";
 import {useContext, useEffect, useState} from "react";
 import {ApplicationContext} from "../contexts/ApplicationContext.ts";
 import {useAppSelector} from "../state/store/store.ts";
-import {AuthenticationAPI} from "../service/AuthenticationAPI.ts";
 import {UserServiceAPI} from "../service/UserServiceAPI.ts";
+import ProfileAvatar from "../components/ProfileAvatar.tsx";
+import LoginButton from "../components/LoginButton.tsx";
 
 function Layout() {
     const navigate = useNavigate();
     const context = useContext(ApplicationContext);
     const userState = useAppSelector(state => state.user);
+    const {process} = useAppSelector(state => state.process);
     const [profileImage, setProfileImage] = useState<string | undefined>(undefined)
 
     useEffect(() => {
@@ -26,10 +28,6 @@ function Layout() {
             })
         }
     }, [userState])
-
-    function login() {
-        window.location.href = AuthenticationAPI.getGoogleAuthenticationUrl();
-    }
 
     return (
         <div style={{display: 'flex', flexDirection: 'column', width: '100%', height: '100%'}}>
@@ -73,15 +71,16 @@ function Layout() {
 
                         {
                             profileImage ? (
-                                <Avatar alt="Profile" src={profileImage}/>
+                                <ProfileAvatar profileImage={profileImage}/>
                             ) : (
-                                <Button onClick={login} color={'primary'}
-                                        sx={{textTransform: 'capitalize'}}>Login</Button>
+                                <LoginButton/>
                             )
                         }
 
                     </Toolbar>
                 </Container>
+                {process > 0 && process <= 99 &&
+                    <LinearProgress variant="determinate" color={'primary'} value={process}/>}
             </AppBar>
 
 

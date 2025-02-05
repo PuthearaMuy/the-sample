@@ -4,6 +4,9 @@ import {useState} from "react";
 import AudioPreview from "../../components/audio/AudioPreview.tsx";
 import {useForm} from "react-hook-form";
 import {SampleServiceAPI} from "../../service/SampleServiceAPI.ts";
+import {useAppDispatch} from "../../state/store/store.ts";
+import {setProcess} from "../../state/slice/ProcessSlice.ts";
+import {useNavigate} from "react-router-dom";
 
 export interface SampleUpload {
     file: File;
@@ -11,12 +14,15 @@ export interface SampleUpload {
     sampleType: string;
     tempo: number;
     key: string;
+    description: string;
 }
 
 function Upload() {
 
     const [audioFile, setAudioFile] = useState<File | undefined>(undefined);
     const [image, setImage] = useState<File | undefined>(undefined);
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const {register, handleSubmit} = useForm<SampleUpload>();
 
@@ -25,18 +31,27 @@ function Upload() {
     }
 
     function onSubmit(data: SampleUpload) {
-        console.log(data);
         const formData = new FormData();
         if (audioFile) {
             formData.append("file", audioFile);
+        }
+        if (image) {
+            formData.append("logo", image);
         }
         formData.append("title", data.title);
         formData.append("sampleType", data.sampleType);
         formData.append("key", data.key);
         formData.append("tempo", '' + data.tempo);
+        formData.append("description", data.description);
         SampleServiceAPI.getInstance().uploadSample(formData, progressEvent => {
-            console.log(progressEvent.progress);
-        }).then();
+            if (progressEvent.progress) {
+                dispatch(setProcess({
+                    process: Math.round(progressEvent.progress * 100)
+                }));
+            }
+        }).then(() => navigate("/home")).finally(() => dispatch(setProcess({
+            process: -1
+        })));
     }
 
     return (
@@ -57,7 +72,7 @@ function Upload() {
 
             <Container sx={{marginTop: '10px'}}>
 
-                <Stack direction={'row'} spacing={2} alignItems={'center'} flexWrap={'wrap-reverse'}>
+                <Stack direction={'row'} spacing={2} alignItems={'flex-end'} flexWrap={'wrap-reverse'}>
                     <Stack width={'75%'} spacing={2} direction={'column'} alignItems={'center'} flexGrow={1}>
                         <TextField
                             // label="Error"
@@ -92,14 +107,16 @@ function Upload() {
                         />
                         <TextField
                             // label="Error"
-                            value="Description doesn't supported"
+                            // value="Description doesn't supported"
                             placeholder={'Description'}
                             fullWidth={true}
+                            {...register("description")}
                         />
                         <Stack width={'100%'}>
                             <Stack direction={'row'} spacing={2} justifyContent={'flex-end'}>
                                 <Button color={'primary'} variant="outlined"
-                                        sx={{minWidth: '100px', textTransform: 'capitalize'}}>Cancel</Button>
+                                        sx={{minWidth: '100px', textTransform: 'capitalize'}}
+                                        onClick={() => navigate(-1)}>Cancel</Button>
                                 <Button color={'primary'} variant="contained"
                                         sx={{minWidth: '100px', textTransform: 'capitalize'}}
                                         onClick={handleSubmit(onSubmit)}>Upload</Button>
