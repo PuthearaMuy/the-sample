@@ -1,5 +1,5 @@
 import "./style/Layout.css";
-import {AppBar, Box, Button, Container, LinearProgress, Toolbar, Typography} from "@mui/material";
+import {AppBar, Box, Container, LinearProgress, Toolbar, Typography} from "@mui/material";
 import {Outlet, useNavigate} from "react-router-dom";
 import SearchInput from "../components/Search.tsx";
 import {FilePathConstants} from "../constants/FilePathConstants.ts";
@@ -33,11 +33,12 @@ function Layout() {
         <div style={{display: 'flex', flexDirection: 'column', width: '100%', height: '100%'}}>
             <AppBar position="sticky" color="transparent" sx={{backgroundColor: "var(--primary-background-color)"}}>
                 <Container maxWidth={false}>
-                    <Toolbar disableGutters sx={{cursor: 'pointer', gap: '10px', width: '100%'}}>
+                    <Toolbar disableGutters sx={{gap: '10px', width: '100%'}}>
                         <img alt={"logo"} src={FilePathConstants.WHITE_LOGO} onClick={() => navigate("/home")} style={{
                             width: "35px",
                             height: "35px",
                             verticalAlign: "middle",
+                            cursor: "pointer",
                         }}/>
                         <Typography
                             variant="h6"
@@ -49,6 +50,7 @@ function Layout() {
                                 fontWeight: 700,
                                 color: 'inherit',
                                 textDecoration: 'none',
+                                cursor: 'pointer',
                             }}
                             onClick={() => navigate("/home")}
                         >
@@ -57,13 +59,15 @@ function Layout() {
 
                         <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}, mx: '40px', gap: '2em'}}>
                             {LabelConstants.pages.map((page) => (
-                                <Button
+                                <Typography
+                                    variant="h6"
+                                    noWrap
                                     key={page.label}
                                     onClick={() => navigate(page.path)}
-                                    sx={{my: 2, color: 'white', display: 'block', textTransform: 'capitalize'}}
+                                    sx={{my: 2, fontSize: '14px', color: (location.pathname.startsWith(page.path) ? 'var(--primary-bright-color)' : 'white'), display: 'block', textTransform: 'capitalize', fontWeight: 550, cursor: 'pointer'}}
                                 >
                                     {page.label}
-                                </Button>
+                                </Typography>
                             ))}
                         </Box>
 

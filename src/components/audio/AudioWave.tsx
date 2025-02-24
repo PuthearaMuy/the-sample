@@ -44,9 +44,7 @@ function AudioWave({id, url, isPlaying, onPlay}: Props) {
         }
     }, [isPlaying, wave]);
 
-    function play(event: MouseEvent) {
-        event.preventDefault();
-        event.stopPropagation();
+    function play() {
         if (wave) {
             if (playing) {
                 wave.pause();
@@ -64,7 +62,7 @@ function AudioWave({id, url, isPlaying, onPlay}: Props) {
 
     return (
         <>
-            {loading && <Skeleton height={100} animation={'pulse'}/>}
+            {loading && <Skeleton height={100} width={'100%'} animation={'pulse'}/>}
             <Container
                 sx={{
                     display: (loading ? 'none' : 'flex'),

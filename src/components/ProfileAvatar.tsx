@@ -47,7 +47,7 @@ function ProfileAvatar(props: Props) {
 
     return (
         <>
-            <Avatar ref={anchorRef} alt="Profile" src={props.profileImage} onClick={handleToggle} />
+            <Avatar ref={anchorRef} sx={{cursor: 'pointer'}} alt="Profile" src={props.profileImage} onClick={handleToggle} />
 
             <Popper
                 open={open}

@@ -7,7 +7,7 @@ const style = {
     top: '30%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    backgroundColor: 'var(--primary-color)',
+    backgroundColor: '#ffffff',
     maxWidth: '800px',
     maxHeight: '800px',
     minWidth: '300px',
@@ -59,7 +59,7 @@ function LoginButton() {
     return (
         <>
             <Button onClick={() => setOpen(true)} color={'primary'}
-                    sx={{textTransform: 'capitalize'}}>Login</Button>
+                    sx={{textTransform: 'capitalize', cursor: 'pointer'}}>Login</Button>
             <Modal open={open} onClose={handleClose}>
                 <Box sx={style}>
                     <Stack>

@@ -36,4 +36,12 @@ export class SampleServiceAPI {
     getSampleLogo(logo: string) {
         return axiosInstance.get(this.baseUrl + "/v1/sample/logo/" + logo, {responseType: 'blob'});
     }
+
+    getSampleDetail(id: number) {
+        return axiosInstance.get(this.baseUrl + "/v1/sample/detail/" + id);
+    }
+
+    downloadSample(id: number) {
+        return axiosInstance.get(this.baseUrl + "/v1/sample/download/" + id, {responseType: 'blob'});
+    }
 }
