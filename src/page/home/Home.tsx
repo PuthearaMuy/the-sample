@@ -13,6 +13,7 @@ import SendIcon from '@mui/icons-material/Send';
 import {SampleDetail} from "../../model/SampleDetail.ts";
 import {useSnackbar} from "notistack";
 import {AxiosResponse} from "axios";
+import {useNavigate} from "react-router-dom";
 
 interface AudioCardProps {
     sample: Sample;
@@ -24,7 +25,8 @@ function AudioCard(props: AudioCardProps) {
     const sample = props.sample;
     const [collapse, setCollapse] = useState(false);
     const [detail, setDetail] = useState<SampleDetail | undefined>(undefined);
-    const { enqueueSnackbar } = useSnackbar();
+    const {enqueueSnackbar} = useSnackbar();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (collapse && !detail) {
@@ -44,8 +46,8 @@ function AudioCard(props: AudioCardProps) {
         setCollapse(prev => !prev);
     }
 
-    function handleSendToEmail() {
-        enqueueSnackbar("Email sent");
+    function handleSendToEmail(id: number) {
+        navigate("/home/" + id)
     }
 
     function handleDownload() {
@@ -92,7 +94,7 @@ function AudioCard(props: AudioCardProps) {
             </Stack>
 
             <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
-                <AudioWave id={sample.id} url={sample.url} onPlay={() => {
+                <AudioWave id={sample.id} onPlay={() => {
                     props.setPlayingId(sample.id)
                 }} isPlaying={sample.id === props.playingId}/>
                 <IconButton sx={{height: '100%'}} color={"inherit"} onClick={handleClickOnSample}>
@@ -102,25 +104,29 @@ function AudioCard(props: AudioCardProps) {
 
 
             <Collapse in={collapse}>
-            {detail ?
-                <Stack paddingTop={'10px'} direction={'row'} justifyContent={'space-between'} alignItems={'flex-start'}>
-                    <Stack>
-                        <Typography color={"var(--primary-bright-color)"}
-                                    sx={{fontSize: '12px'}}>Owner: {detail.ownerInfo.username}</Typography>
-                        <Typography sx={{fontSize: '12px', wordBreak: 'break-word'}}>{detail?.description}</Typography>
+                {detail ?
+                    <Stack paddingTop={'10px'} direction={'row'} justifyContent={'space-between'}
+                           alignItems={'flex-start'}>
+                        <Stack>
+                            <Typography color={"var(--primary-bright-color)"}
+                                        sx={{fontSize: '12px'}}>Owner: {detail.ownerInfo.username}</Typography>
+                            <Typography
+                                sx={{fontSize: '12px', wordBreak: 'break-word'}}>{detail?.description}</Typography>
+                        </Stack>
+                        <Stack direction={'row'}>
+                            <IconButton sx={{height: '100%'}} color={"inherit"}
+                                        onClick={() => handleSendToEmail(sample.id)}>
+                                <SendIcon fontSize="small"/>
+                            </IconButton>
+                            <IconButton sx={{height: '100%'}} color={"inherit"} onClick={handleDownload}>
+                                <DownloadIcon fontSize="small"/>
+                            </IconButton>
+                        </Stack>
                     </Stack>
-                    <Stack direction={'row'}>
-                        <IconButton sx={{height: '100%'}} color={"inherit"} onClick={handleSendToEmail}>
-                            <SendIcon fontSize="small"/>
-                        </IconButton>
-                        <IconButton sx={{height: '100%'}} color={"inherit"} onClick={handleDownload}>
-                            <DownloadIcon fontSize="small"/>
-                        </IconButton>
-                    </Stack>
-                </Stack>
-                :
-                collapse && <Stack paddingBlock={'10px'}><LinearProgress variant="indeterminate" color={'primary'} /></Stack>
-            }
+                    :
+                    collapse &&
+                    <Stack paddingBlock={'10px'}><LinearProgress variant="indeterminate" color={'primary'}/></Stack>
+                }
             </Collapse>
 
 

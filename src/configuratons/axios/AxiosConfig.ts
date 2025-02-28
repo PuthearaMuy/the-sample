@@ -20,13 +20,10 @@ const axiosInstance = axios.create({
         'Accept': 'application/json',
         'Content-Type': 'application/json',
     },
-    fetchOptions: {
-        retries: true,
-        maxRetries: 5,
-    }
 })
 
 axiosInstance.interceptors.request.use((config) => {
+
     if (application) {
         if (application.accessToken) {
             config.headers['Authorization'] = 'Bearer ' + application?.accessToken;
@@ -47,7 +44,37 @@ interface FailedRequests {
 }
 
 let failedRequests: FailedRequests[] = [];
-let isTokenRefreshing = false;
+
+async function refreshToken() {
+    const sessionId = localStorage.getItem(ApplicationConstants.SESSION_ID);
+
+    try {
+        if (sessionId) {
+            const response = await axiosInstance.post(BackendConfigurationProperty.getUserManagementFullPath() + "/auth/refresh/" + sessionId);
+            const {access_token} = response.data ?? {};
+
+            if (!access_token) {
+                throw new Error(
+                    "Something went wrong while refreshing your access token"
+                );
+            }
+            store.dispatch(setToken(access_token));
+
+            failedRequests.forEach(({resolve, reject, config}) => {
+                axiosInstance(config)
+                    .then((response) => resolve(response))
+                    .catch((error) => reject(error));
+            });
+        }
+    } catch (_error: unknown) {
+        console.error(_error);
+        failedRequests.forEach(({reject, error}) => reject(error));
+        document.cookie = '';
+        localStorage.clear();
+    } finally {
+        failedRequests = [];
+    }
+}
 
 axiosInstance.interceptors.response.use(
     (response) => response,
@@ -55,11 +82,11 @@ axiosInstance.interceptors.response.use(
         const status = error.response?.status;
         const originalRequestConfig = error.config!;
 
-        if (status !== 401) {
-            return Promise.reject(error);
-        }
-
-        if (isTokenRefreshing) {
+        if (status === 401) {
+            if (error.config?.url?.includes("/auth/refresh")) {
+                failedRequests = [];
+                return Promise.reject(error);
+            }
             return new Promise((resolve, reject) => {
                 failedRequests.push({
                     resolve,
@@ -67,42 +94,11 @@ axiosInstance.interceptors.response.use(
                     config: originalRequestConfig,
                     error: error,
                 });
+                refreshToken();
             });
-        }
-
-        const sessionId = localStorage.getItem(ApplicationConstants.SESSION_ID);
-        isTokenRefreshing = true;
-
-        try {
-            if (sessionId) {
-                const response = await axiosInstance.post(BackendConfigurationProperty.getUserManagementFullPath() + "/auth/refresh/" + sessionId);
-                const {access_token} = response.data ?? {};
-
-                if (!access_token) {
-                    throw new Error(
-                        "Something went wrong while refreshing your access token"
-                    );
-                }
-                store.dispatch(setToken(access_token));
-
-                failedRequests.forEach(({resolve, reject, config}) => {
-                    axiosInstance(config)
-                        .then((response) => resolve(response))
-                        .catch((error) => reject(error));
-                });
-            }
-        } catch (_error: unknown) {
-            console.error(_error);
-            failedRequests.forEach(({reject, error}) => reject(error));
-            document.cookie = '';
-            localStorage.clear();
+        } else {
             return Promise.reject(error);
-        } finally {
-            failedRequests = [];
-            isTokenRefreshing = false;
         }
-
-        return axiosInstance(originalRequestConfig);
     }
 );
 

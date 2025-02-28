@@ -40,7 +40,14 @@ const theme = createTheme({
     }
 });
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+ defaultOptions: {
+     queries: {
+         retry: false,
+     }
+ }
+});
+
 const appContext: AppContext = {
     applicationName: import.meta.env.VITE_APP_NAME,
 };

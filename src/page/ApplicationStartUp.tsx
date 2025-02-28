@@ -1,12 +1,13 @@
 import {useAppDispatch} from "../state/store/store.ts";
 import {setBackendConfig} from "../state/slice/BackendConfigSlice.ts";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import '../configuratons/property/BackendConfigurationProperty.ts'
 import {ApplicationConstants} from "../constants/ApplicationConstants.ts";
 import {AuthenticationAPI} from "../service/AuthenticationAPI.ts";
 import {setIsAuthenticated, setSessionId, setToken} from "../state/slice/ApplicationSlice.ts";
 import {UserServiceAPI} from "../service/UserServiceAPI.ts";
 import {IUser, setUser} from "../state/slice/UserSlice.ts";
+import Loading from "../components/Loading.tsx";
 
 function ApplicationStartUp(props: { children: React.ReactNode }) {
     const appDispatch = useAppDispatch();
@@ -16,6 +17,7 @@ function ApplicationStartUp(props: { children: React.ReactNode }) {
         userManagementContextPath: '/api'
     }));
 
+    const [loading, setLoading] = useState(true);
     const sessionId = localStorage.getItem(ApplicationConstants.SESSION_ID);
 
     useEffect(() => {
@@ -30,11 +32,13 @@ function ApplicationStartUp(props: { children: React.ReactNode }) {
                     appDispatch(setUser(user));
                     appDispatch(setIsAuthenticated(true));
                 });
-            });
+            }).finally(() => {
+                setLoading(false);
+            })
         }
     }, [appDispatch, sessionId]);
 
-    return (props.children);
+    return loading ? <Loading/> : (props.children);
 }
 
 export default ApplicationStartUp;

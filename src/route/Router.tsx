@@ -6,6 +6,7 @@ import NotFoundPage from "../layout/NotfoundPage.tsx";
 import Upload from "../page/upload/Upload.tsx";
 import Test from "../page/Test.tsx";
 import LoginRedirect from "../page/login/LoginRedirect.tsx";
+import SampleDetail from "../page/detail/SampleDetail.tsx";
 
 const routes: RouteObject[] = [
     {
@@ -20,6 +21,10 @@ const routes: RouteObject[] = [
                 path: "home",
                 index: true,
                 element: <Home/>,
+            },
+            {
+                path: "home/:id",
+                element: <SampleDetail/>
             },
             {
                 path: "about",

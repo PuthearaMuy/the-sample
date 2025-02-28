@@ -8,34 +8,40 @@ import PauseCircleIcon from '@mui/icons-material/PauseCircle';
 
 interface Props {
     id: number;
-    url: string;
     isPlaying: boolean;
     onPlay?: () => void;
 }
 
-function AudioWave({id, url, isPlaying, onPlay}: Props) {
+function AudioWave({id, isPlaying, onPlay}: Props) {
     const [wave, setWave] = useState<WaveSurfer | undefined>(undefined);
     const [playing, setPlaying] = useState(false);
     const [loading, setLoading] = useState(true);
-    const randomIdRef = useRef<string>(Math.random().toString(10).substring(2) + id);
+    const waveRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-
-        SampleServiceAPI.getInstance().getSampleAudio(url).then((response: AxiosResponse<Blob>) => {
+        SampleServiceAPI.getInstance().getSampleAudio(id).then((response: AxiosResponse<Blob>) => {
             const url = URL.createObjectURL(response.data);
-            const waveSurfer = WaveSurfer.create({
-                container: "#waveform" + randomIdRef.current,
-                waveColor: '#ffffff',
-                progressColor: '#7fdeff',
-                url: url,
-                height: 100,
-            });
-            waveSurfer.on(('finish'), () => setPlaying(false))
-            waveSurfer.on(('ready'), () => setLoading(false));
+            if (waveRef.current) {
 
-            setWave(waveSurfer);
+                if (waveRef.current.innerHTML) {
+                    waveRef.current.childNodes.forEach(element => element.remove());
+                }
+
+                const waveSurfer = WaveSurfer.create({
+                    container: waveRef.current,
+                    waveColor: '#ffffff',
+                    progressColor: '#7fdeff',
+                    url: url,
+                    height: 100,
+                });
+
+                waveSurfer.on(('finish'), () => setPlaying(false))
+                waveSurfer.on(('ready'), () => setLoading(false));
+
+                setWave(waveSurfer);
+            }
         })
-    }, [url]);
+    }, [id]);
 
     useEffect(() => {
         if (wave && wave.isPlaying() && !isPlaying) {
@@ -71,7 +77,7 @@ function AudioWave({id, url, isPlaying, onPlay}: Props) {
                     width: '100%',
                     padding: '0 !important'
                 }}>
-                <div id={"waveform" + randomIdRef.current} style={{width: '100%'}}></div>
+                <div ref={waveRef} style={{width: '100%'}}></div>
 
                 {wave && (
                     <IconButton sx={{height: '100%', fontSize: '2em'}} color={"inherit"} onClick={play}>

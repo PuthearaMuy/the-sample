@@ -64,7 +64,7 @@ function Layout() {
                                     noWrap
                                     key={page.label}
                                     onClick={() => navigate(page.path)}
-                                    sx={{my: 2, fontSize: '14px', color: (location.pathname.startsWith(page.path) ? 'var(--primary-bright-color)' : 'white'), display: 'block', textTransform: 'capitalize', fontWeight: 550, cursor: 'pointer'}}
+                                    sx={{my: 2, fontSize: '14px', fontFamily: 'var(--merinda-font)', color: (location.pathname.startsWith(page.path) ? 'var(--primary-bright-color)' : 'white'), display: 'block', textTransform: 'capitalize', fontWeight: 550, cursor: 'pointer'}}
                                 >
                                     {page.label}
                                 </Typography>

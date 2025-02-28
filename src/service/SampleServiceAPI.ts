@@ -17,15 +17,15 @@ export class SampleServiceAPI {
     }
 
     getSamples() {
-        return axiosInstance.get(this.baseUrl + "/v1/sample");
+        return axiosInstance.get(this.baseUrl + "/v1/samples");
     }
 
-    getSampleAudio(url: string) {
-        return axiosInstance.get(url, {responseType: 'blob'});
+    getSampleAudio(id: number) {
+        return axiosInstance.get(this.baseUrl + "/v1/samples/" + id, {responseType: 'blob'});
     }
 
     uploadSample(formData: FormData, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void) {
-        return axiosInstance.post(this.baseUrl + "/v1/sample", formData, {
+        return axiosInstance.post(this.baseUrl + "/v1/samples", formData, {
             headers: {
                 "Content-Type": "multipart/form-data"
             },
@@ -34,14 +34,14 @@ export class SampleServiceAPI {
     }
 
     getSampleLogo(logo: string) {
-        return axiosInstance.get(this.baseUrl + "/v1/sample/logo/" + logo, {responseType: 'blob'});
+        return axiosInstance.get(this.baseUrl + "/samples/logo/" + logo, {responseType: 'blob'});
     }
 
     getSampleDetail(id: number) {
-        return axiosInstance.get(this.baseUrl + "/v1/sample/detail/" + id);
+        return axiosInstance.get(this.baseUrl + "/v1/samples/basic-info/" + id);
     }
 
     downloadSample(id: number) {
-        return axiosInstance.get(this.baseUrl + "/v1/sample/download/" + id, {responseType: 'blob'});
+        return axiosInstance.get(this.baseUrl + "/v1/samples/download/" + id, {responseType: 'blob'});
     }
 }

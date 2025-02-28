@@ -7,7 +7,9 @@ function Test() {
 
     return (
         <>
+            <p style={{ wordBreak: 'break-word' }}>
             {applicationState.accessToken}
+            </p>
             <br/>
         </>
     );
