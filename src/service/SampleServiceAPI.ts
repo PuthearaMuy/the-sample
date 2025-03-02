@@ -1,5 +1,6 @@
 import axiosInstance from "../configuratons/axios/AxiosConfig.ts";
 import {AxiosProgressEvent} from "axios";
+import {SamplePriceDTO} from "../model/SamplePrice.ts";
 
 export class SampleServiceAPI {
     private readonly baseUrl: string;
@@ -31,6 +32,10 @@ export class SampleServiceAPI {
             },
             onUploadProgress
         });
+    }
+
+    updateSamplePrice(samplePrice: SamplePriceDTO) {
+        return axiosInstance.put(this.baseUrl + "/v1/samples/price", samplePrice);
     }
 
     getSampleLogo(logo: string) {

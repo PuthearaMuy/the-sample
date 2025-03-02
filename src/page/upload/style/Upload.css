@@ -1,0 +1,36 @@
+.price-type-container {
+    border: 1px solid var(--primary-color);
+    border-radius: 8px;
+    padding: 10px;
+    max-width: 300px;
+    min-width: 200px;
+    min-height: 100px;
+    cursor: pointer;
+}
+
+.price-type-container:hover {
+    background: var(--secondary-hover-background-color);
+}
+
+.price-input-container {
+    height: 100%;
+    width: 100%;
+    color: var(--primary-color);
+}
+
+.price-input {
+    outline: none;
+    border-radius: 5px;
+    padding: 5px;
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.negotiation-checkbox {
+    cursor: pointer;
+}

@@ -7,6 +7,7 @@ import Upload from "../page/upload/Upload.tsx";
 import Test from "../page/Test.tsx";
 import LoginRedirect from "../page/login/LoginRedirect.tsx";
 import SampleDetail from "../page/detail/SampleDetail.tsx";
+import SamplePurchaseSetting from "../page/upload/SamplePurchaseSetting.tsx";
 
 const routes: RouteObject[] = [
     {
@@ -33,6 +34,10 @@ const routes: RouteObject[] = [
             {
                 path: "upload",
                 element: <Upload/>
+            },
+            {
+                path: "upload/:id",
+                element: <SamplePurchaseSetting/>
             },
             {
                 path: "test",

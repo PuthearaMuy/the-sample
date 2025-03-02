@@ -44,10 +44,11 @@ interface FailedRequests {
 }
 
 let failedRequests: FailedRequests[] = [];
+let isRefreshing = false;
 
 async function refreshToken() {
     const sessionId = localStorage.getItem(ApplicationConstants.SESSION_ID);
-
+    isRefreshing = true;
     try {
         if (sessionId) {
             const response = await axiosInstance.post(BackendConfigurationProperty.getUserManagementFullPath() + "/auth/refresh/" + sessionId);
@@ -73,6 +74,7 @@ async function refreshToken() {
         localStorage.clear();
     } finally {
         failedRequests = [];
+        isRefreshing = false;
     }
 }
 
@@ -94,7 +96,9 @@ axiosInstance.interceptors.response.use(
                     config: originalRequestConfig,
                     error: error,
                 });
-                refreshToken();
+                if (!isRefreshing) {
+                    refreshToken();
+                }
             });
         } else {
             return Promise.reject(error);

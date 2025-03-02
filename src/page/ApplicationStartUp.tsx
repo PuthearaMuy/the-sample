@@ -35,6 +35,8 @@ function ApplicationStartUp(props: { children: React.ReactNode }) {
             }).finally(() => {
                 setLoading(false);
             })
+        } else {
+            setLoading(false);
         }
     }, [appDispatch, sessionId]);
 

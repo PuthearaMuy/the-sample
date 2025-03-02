@@ -49,7 +49,10 @@ function Upload() {
                     process: Math.round(progressEvent.progress * 100)
                 }));
             }
-        }).then(() => navigate("/home")).finally(() => dispatch(setProcess({
+        }).then((res) => {
+            const data = res.data;
+            navigate("/upload/" + data.id);
+        }).finally(() => dispatch(setProcess({
             process: -1
         })));
     }
