@@ -1,3 +1,5 @@
+import {SoldOption} from "./SamplePrice.ts";
+
 export interface Sample {
     id: number,
     key: string,
@@ -7,6 +9,7 @@ export interface Sample {
     title: string,
     type: string,
     url: string
-    createDate: number
+    createDate: number,
     logo: string,
+    soldOption: SoldOption,
 }

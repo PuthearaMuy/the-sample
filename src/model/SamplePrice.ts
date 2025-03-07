@@ -1,15 +1,23 @@
 export interface SamplePriceDTO {
     sampleId: number;
     samplePrices: SamplePrice[];
-};
+}
 
 export interface SamplePrice {
     type: PurchaseType,
     amount: number,
-};
+    soldOption: SoldOption,
+    negotiation: boolean,
+}
 
 export enum PurchaseType {
-    NORMAL = "Normal",
-    PREMIUM = "Premium",
-    EXCLUSIVE = "Exclusive"
+    NORMAL = "NORMAL",
+    PREMIUM = "PREMIUM",
+    EXCLUSIVE = "EXCLUSIVE"
+}
+
+export enum SoldOption {
+    FREE = "FREE",
+    FREE_NON_PROFIT = "FREE_NON_PROFIT",
+    SOLD = "SOLD",
 }

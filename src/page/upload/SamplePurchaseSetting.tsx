@@ -2,10 +2,11 @@ import {useNavigate} from "react-router-dom";
 import AudioWave from "../../components/audio/AudioWave.tsx";
 import {Button, Container, Stack, Typography} from "@mui/material";
 import "./style/Upload.css"
-import PurchaseTypeCard from "../../components/purchase/PurchaseTypeCard.tsx";
-import {PurchaseType, SamplePriceDTO} from "../../model/SamplePrice.ts";
+import PurchaseTypeCard, {PurchaseCardProps} from "../../components/purchase/PurchaseTypeCard.tsx";
+import {SoldOption, PurchaseType, SamplePriceDTO} from "../../model/SamplePrice.ts";
 import {SampleServiceAPI} from "../../service/SampleServiceAPI.ts";
 import {useSnackbar} from "notistack";
+import {useState} from "react";
 
 function SamplePurchaseSetting() {
     const navigation = useNavigate();
@@ -22,27 +23,62 @@ function SamplePurchaseSetting() {
         samplePrices: [
             {
                 type: PurchaseType.NORMAL,
-                amount: 2
+                amount: 2,
+                negotiation: false,
+                soldOption: SoldOption.SOLD
             },
             {
                 type: PurchaseType.PREMIUM,
-                amount: 10
+                amount: 10,
+                negotiation: false,
+                soldOption: SoldOption.SOLD
             },
             {
                 type: PurchaseType.EXCLUSIVE,
-                amount: -1
+                amount: 0,
+                negotiation: true,
+                soldOption: SoldOption.SOLD
             }
         ]
     }
-    function getPrice(type: PurchaseType) {
-        return samplePrice.samplePrices.find((p) => p.type === type)?.amount;
-    }
+
+    const [samplePrices, setSamplePrices] = useState(samplePrice.samplePrices);
 
     function handleSubmit() {
+        samplePrice.samplePrices = samplePrices;
         SampleServiceAPI.getInstance().updateSamplePrice(samplePrice).then(() => {
             enqueueSnackbar("Upload is done");
             navigation("/home");
         });
+    }
+
+    function samplePriceChange(change: PurchaseCardProps) {
+        const typeIndex = samplePrices.findIndex(sp => sp.type === change.type);
+        if (typeIndex >= 0) {
+            samplePrices[typeIndex] = {
+                amount: change.price,
+                type: change.type,
+                soldOption: change.soldOption,
+                negotiation: change.negotiation,
+            };
+            setSamplePrices([...samplePrices]);
+        }
+    }
+
+    function getPurchaseCard(type: PurchaseType) {
+        const samplePrice = samplePrices.find((p) => p.type === type);
+        if (samplePrice) {
+            const prop = {
+                type: samplePrice.type,
+                soldOption: samplePrice.soldOption,
+                negotiation: samplePrice.negotiation,
+                price: samplePrice.amount,
+                onChange: samplePriceChange,
+                description: (samplePrice.type + " mock description")
+            }
+            return <PurchaseTypeCard prop={prop} />
+        }
+        return <></>
     }
 
     return (
@@ -52,15 +88,15 @@ function SamplePurchaseSetting() {
             </Container>
 
             <Container>
-                <Stack spacing={1} sx={{width: '100%'}}>
+                <Stack spacing={1} sx={{width: '100%', marginTop: '20px'}}>
                     <Stack justifyContent={'flex-start'} sx={{width: '100%', textAlign: 'left'}}>
                         <Typography fontWeight={'600'} margin={'15px 0'}>Purchase info</Typography>
                     </Stack>
 
                     <Stack spacing={1} useFlexGap={true} direction={'row'} flexWrap={'wrap'}>
-                        <PurchaseTypeCard price={getPrice(PurchaseType.NORMAL)} type={PurchaseType.NORMAL} description={"Normal description"}/>
-                        <PurchaseTypeCard price={getPrice(PurchaseType.PREMIUM)} type={PurchaseType.PREMIUM} description={"Premium description"}/>
-                        <PurchaseTypeCard price={getPrice(PurchaseType.EXCLUSIVE)} type={PurchaseType.EXCLUSIVE} description={"Exclusive description"} negotiation={true}/>
+                        {getPurchaseCard(PurchaseType.NORMAL)}
+                        {getPurchaseCard(PurchaseType.PREMIUM)}
+                        {getPurchaseCard(PurchaseType.EXCLUSIVE)}
                     </Stack>
                 </Stack>
 

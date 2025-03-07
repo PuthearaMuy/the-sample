@@ -8,6 +8,10 @@
     cursor: pointer;
 }
 
+.price-type-container.selected {
+    background: var(--secondary-active-background-color);
+}
+
 .price-type-container:hover {
     background: var(--secondary-hover-background-color);
 }

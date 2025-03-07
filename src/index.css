@@ -59,3 +59,21 @@ body {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--secondary-active-background-color);
 }
+
+.t-custom-input {
+    border-color: var(--secondary-active-background-color);
+}
+
+.t-custom-input:focus {
+    box-shadow: 0 0 2px 2px var(--secondary-active-background-color);
+}
+
+.t-custom-input:disabled {
+    border: none;
+}
+
+.t-custom-input.select {
+    outline: none;
+    border-radius: 5px;
+    padding: 5px;
+}

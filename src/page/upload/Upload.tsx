@@ -7,6 +7,7 @@ import {SampleServiceAPI} from "../../service/SampleServiceAPI.ts";
 import {useAppDispatch} from "../../state/store/store.ts";
 import {setProcess} from "../../state/slice/ProcessSlice.ts";
 import {useNavigate} from "react-router-dom";
+import TInput from "../../components/input/TInput.tsx";
 
 export interface SampleUpload {
     file: File;
@@ -84,6 +85,7 @@ function Upload() {
                             fullWidth={true}
                             {...register("title")}
                         />
+                        <TInput/>
                         <Stack spacing={2} direction={'row'} width={'100%'}>
                             <TextField
                                 // label="Error"

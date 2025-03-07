@@ -1,6 +1,7 @@
 import axiosInstance from "../configuratons/axios/AxiosConfig.ts";
 import {AxiosProgressEvent} from "axios";
 import {SamplePriceDTO} from "../model/SamplePrice.ts";
+import {SampleCheckout} from "../model/SampleCheckout.ts";
 
 export class SampleServiceAPI {
     private readonly baseUrl: string;
@@ -25,6 +26,10 @@ export class SampleServiceAPI {
         return axiosInstance.get(this.baseUrl + "/v1/samples/" + id, {responseType: 'blob'});
     }
 
+    getSampleDetail(id: number) {
+        return axiosInstance.get(this.baseUrl + "/v1/samples/detail/" + id);
+    }
+
     uploadSample(formData: FormData, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void) {
         return axiosInstance.post(this.baseUrl + "/v1/samples", formData, {
             headers: {
@@ -42,11 +47,15 @@ export class SampleServiceAPI {
         return axiosInstance.get(this.baseUrl + "/samples/logo/" + logo, {responseType: 'blob'});
     }
 
-    getSampleDetail(id: number) {
+    getSampleBasicInfo(id: number) {
         return axiosInstance.get(this.baseUrl + "/v1/samples/basic-info/" + id);
     }
 
     downloadSample(id: number) {
         return axiosInstance.get(this.baseUrl + "/v1/samples/download/" + id, {responseType: 'blob'});
+    }
+
+    sampleCheckout(sampleCheckout: SampleCheckout) {
+        return axiosInstance.post(this.baseUrl + "/v1/purchase/sample/checkout", sampleCheckout);
     }
 }

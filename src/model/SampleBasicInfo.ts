@@ -1,4 +1,4 @@
-export interface SampleDetail {
+export interface SampleBasicInfo {
     id: number;
     description: string;
     ownerInfo: OwnerInfo;

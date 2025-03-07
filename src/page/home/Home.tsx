@@ -10,10 +10,11 @@ import SampleAvatar from "../../components/SampleAvatar.tsx";
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import DownloadIcon from '@mui/icons-material/Download';
 import SendIcon from '@mui/icons-material/Send';
-import {SampleDetail} from "../../model/SampleDetail.ts";
+import {SampleBasicInfo} from "../../model/SampleBasicInfo.ts";
 import {useSnackbar} from "notistack";
 import {AxiosResponse} from "axios";
 import {useNavigate} from "react-router-dom";
+import {formatDate} from "../../utils/Utils.ts";
 
 interface AudioCardProps {
     sample: Sample;
@@ -24,23 +25,18 @@ interface AudioCardProps {
 function AudioCard(props: AudioCardProps) {
     const sample = props.sample;
     const [collapse, setCollapse] = useState(false);
-    const [detail, setDetail] = useState<SampleDetail | undefined>(undefined);
+    const [detail, setDetail] = useState<SampleBasicInfo | undefined>(undefined);
     const {enqueueSnackbar} = useSnackbar();
     const navigate = useNavigate();
 
     useEffect(() => {
         if (collapse && !detail) {
-            SampleServiceAPI.getInstance().getSampleDetail(sample.id).then((res) => {
-                const detailData = res.data as SampleDetail;
+            SampleServiceAPI.getInstance().getSampleBasicInfo(sample.id).then((res) => {
+                const detailData = res.data as SampleBasicInfo;
                 setDetail(detailData);
             });
         }
     }, [collapse, detail, sample.id]);
-
-    function getFormatDate(timeStamp: number) {
-        const date = new Date(timeStamp);
-        return date.toLocaleDateString("en-US")
-    }
 
     function handleClickOnSample() {
         setCollapse(prev => !prev);
@@ -78,8 +74,10 @@ function AudioCard(props: AudioCardProps) {
 
                 <Container sx={{padding: '0 !important'}}>
                     <Stack direction={"row"} justifyContent={"space-between"}>
-                        <Typography>{sample.title}</Typography>
-                        <Typography>{getFormatDate(sample.createDate)}</Typography>
+                        <Typography><span
+                            style={{color: 'var(--primary-bright-color)'}}>[{sample.soldOption}] </span>{sample.title}
+                        </Typography>
+                        <Typography>{formatDate(sample.createDate)}</Typography>
                     </Stack>
                     <Stack direction={"row"} justifyContent={"space-between"}
                            color={"var(--primary-bright-color)"}>
