@@ -8,11 +8,8 @@
     align-items: center;
     word-break: break-word;
 
-    &:hover {
+    &:hover, &.drag-on {
         background-color: var(--secondary-hover-background-color);
-    }
-
-    &.drag-on {
-        background-color: var(--secondary-hover-background-color);
+        box-shadow: 0 0 2px 1px var(--secondary-active-background-color);
     }
 }

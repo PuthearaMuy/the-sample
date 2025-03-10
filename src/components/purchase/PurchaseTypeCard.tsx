@@ -98,7 +98,7 @@ function PurchaseTypeCard({prop}: { prop: PurchaseCardProps }) {
                                    className={'price-input t-custom-input'}
                                    style={{height: '20px', width: '100%'}}
                                    type={'number'}/>
-                            <Typography sx={{position: 'absolute', right: '10px', color: 'black'}}>$</Typography>
+                            <Typography sx={{position: 'absolute', right: '10px', color: (prop.negotiation ? 'var(--secondary-active-background-color)' : 'var(--primary-color)')}}>$</Typography>
                         </Stack>
                     </Stack>
                 }

@@ -10,6 +10,7 @@ import KeyboardBackspaceOutlinedIcon from '@mui/icons-material/KeyboardBackspace
 import {SampleCheckout} from "../../model/SampleCheckout.ts";
 import NegotiationDetail from "./NegotiationDetail.tsx";
 import {formatDate} from "../../utils/Utils.ts";
+import TButton from "../../components/button/TButton.tsx";
 
 function SampleDetail() {
 
@@ -62,12 +63,12 @@ function SampleDetail() {
 
     return (
         <Container>
-            <Stack border={'1px solid var(--secondary-active-background-color)'} borderRadius={'5px'} width={'40px'}
-                   alignItems={'center'}
-                   sx={[{cursor: 'pointer'}, () => ({'&:hover': {borderColor: 'var(--primary-color)'}})]}
-                   onClick={() => navigation("/home")}>
-                <KeyboardBackspaceOutlinedIcon/>
+            <Stack>
+                <TButton sx={{width: '45px'}} onClick={() => navigation("/home")}>
+                    <KeyboardBackspaceOutlinedIcon/>
+                </TButton>
             </Stack>
+
             <Stack direction="column" spacing={2} marginTop={'20px'}>
                 <Stack sx={{textAlign: "left"}}>
                     <Typography variant="h6" fontFamily={'var(--merinda-font)'}>{detail?.title}</Typography>

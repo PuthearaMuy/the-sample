@@ -74,8 +74,7 @@ function AudioCard(props: AudioCardProps) {
 
                 <Container sx={{padding: '0 !important'}}>
                     <Stack direction={"row"} justifyContent={"space-between"}>
-                        <Typography><span
-                            style={{color: 'var(--primary-bright-color)'}}>[{sample.soldOption}] </span>{sample.title}
+                        <Typography><span>[{sample.soldOption}] </span>{sample.title}
                         </Typography>
                         <Typography>{formatDate(sample.createDate)}</Typography>
                     </Stack>

@@ -103,7 +103,7 @@ function SamplePurchaseSetting() {
                 <Stack direction={'row'} spacing={2} justifyContent={'flex-start'} marginTop={'20px'}>
                     <Button color={'primary'} variant="outlined"
                             sx={{minWidth: '100px', textTransform: 'capitalize'}}
-                            onClick={() => navigation(-1)}>Cancel</Button>
+                            onClick={() => navigation("/home")}>Cancel</Button>
                     <Button color={'primary'} variant="contained"
                             sx={{minWidth: '100px', textTransform: 'capitalize'}}
                             onClick={handleSubmit}>Submit</Button>

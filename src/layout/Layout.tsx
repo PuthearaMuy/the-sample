@@ -15,6 +15,7 @@ function Layout() {
     const navigate = useNavigate();
     const context = useContext(ApplicationContext);
     const userState = useAppSelector(state => state.user);
+    const application = useAppSelector(state => state.application);
     const {process} = useAppSelector(state => state.process);
     const [profileImage, setProfileImage] = useState<string | undefined>(undefined)
 
@@ -58,17 +59,32 @@ function Layout() {
                         </Typography>
 
                         <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}, mx: '40px', gap: '2em'}}>
-                            {LabelConstants.pages.map((page) => (
-                                <Typography
-                                    variant="h6"
-                                    noWrap
-                                    key={page.label}
-                                    onClick={() => navigate(page.path)}
-                                    sx={{my: 2, fontSize: '14px', fontFamily: 'var(--merinda-font)', color: (location.pathname.startsWith(page.path) ? 'var(--primary-bright-color)' : 'white'), display: 'block', textTransform: 'capitalize', fontWeight: 550, cursor: 'pointer'}}
-                                >
-                                    {page.label}
-                                </Typography>
-                            ))}
+                            {LabelConstants.pages.map((page) => {
+                                if (page.path.includes("upload") && !application.isAuthenticated) {
+                                    return <></>;
+                                }
+                                return (
+                                    <Typography
+                                        variant="h6"
+                                        noWrap
+                                        key={page.label}
+                                        onClick={() => navigate(page.path)}
+                                        sx={{
+                                            my: 2,
+                                            fontSize: '14px',
+                                            fontFamily: 'var(--merinda-font)',
+                                            color: (location.pathname.startsWith(page.path) ? 'var(--primary-bright-color)' : 'white'),
+                                            display: 'block',
+                                            textTransform: 'capitalize',
+                                            fontWeight: 550,
+                                            cursor: 'pointer'
+                                        }}
+                                    >
+                                        {page.label}
+                                    </Typography>
+                                );
+
+                            })}
                         </Box>
 
                         <SearchInput/>

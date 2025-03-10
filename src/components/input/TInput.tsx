@@ -1,11 +1,22 @@
 import {Stack} from "@mui/material";
-import "TInput.css";
+import "./TInput.css";
+import {HTMLProps} from "react";
 
-function TInput() {
+export interface InputProps extends HTMLProps<HTMLInputElement>{
+    placeholder?: string;
+    value?: string;
+    name?: string;
+    inputStyle?: React.CSSProperties;
+    containerStyle?: React.CSSProperties;
+}
+
+function TInput(prop: InputProps) {
     return (
-      <Stack>
-          <input type={'text'} name={'title'} placeholder={'Please enter title.'}/>
-      </Stack>
+        <Stack width={'100%'} className={'t-custom-input-container'} style={prop.containerStyle}>
+            <input style={prop.inputStyle} name={prop.name} placeholder={prop.placeholder}
+                   value={prop.value}
+                   className={'t-custom-input'} {...prop}/>
+        </Stack>
     );
 }
 
