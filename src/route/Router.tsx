@@ -8,6 +8,10 @@ import Test from "../page/Test.tsx";
 import LoginRedirect from "../page/login/LoginRedirect.tsx";
 import SampleDetail from "../page/detail/SampleDetail.tsx";
 import SamplePurchaseSetting from "../page/upload/SamplePurchaseSetting.tsx";
+import Account from "../page/user/account/Account.tsx";
+import ProfileInfo from "../page/user/information/ProfileInfo.tsx";
+import UserSample from "../page/user/sample/UserSample.tsx";
+import Purchase from "../page/user/purchase/Purchase.tsx";
 
 const routes: RouteObject[] = [
     {
@@ -42,6 +46,24 @@ const routes: RouteObject[] = [
             {
                 path: "test",
                 element: <Test/>
+            },
+            {
+                path: 'account',
+                element: <Account/>,
+                children: [
+                    {
+                        path: 'sample',
+                        element: <UserSample/>
+                    },
+                    {
+                        path: 'purchase',
+                        element: <Purchase/>
+                    },
+                    {
+                        path: 'edit',
+                        element: <ProfileInfo/>
+                    }
+                ]
             },
             {
                 path: "login",

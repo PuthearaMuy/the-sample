@@ -8,6 +8,7 @@ export interface IUser {
     phone: string;
     email: string;
     profileName: string;
+    profileUrl?: string;
 }
 
 const userInitial: IUser = {

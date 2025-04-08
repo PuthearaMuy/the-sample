@@ -1,15 +1,18 @@
-import {Avatar, ClickAwayListener, Grow, MenuItem, MenuList, Paper, Popper} from "@mui/material";
+import {Avatar, ClickAwayListener, Grow, MenuItem, MenuList, Paper, Popper, Typography} from "@mui/material";
 import React, {useRef, useState} from "react";
 import {ApplicationConstants} from "../constants/ApplicationConstants.ts";
 import {AuthenticationAPI} from "../service/AuthenticationAPI.ts";
+import {useNavigate} from "react-router-dom";
 
 interface Props {
-    profileImage: string
+    profileImage: string;
+    username: string;
 }
 
 function ProfileAvatar(props: Props) {
     const [open, setOpen] = useState(false);
     const anchorRef = useRef<HTMLDivElement>(null);
+    const navigate = useNavigate();
 
     const handleToggle = () => {
         setOpen((prevOpen) => !prevOpen);
@@ -47,7 +50,8 @@ function ProfileAvatar(props: Props) {
 
     return (
         <>
-            <Avatar ref={anchorRef} sx={{cursor: 'pointer'}} alt="Profile" src={props.profileImage} onClick={handleToggle} />
+            <Avatar ref={anchorRef} sx={{cursor: 'pointer'}} alt="Profile" src={props.profileImage}
+                    onClick={handleToggle}/>
 
             <Popper
                 open={open}
@@ -57,7 +61,7 @@ function ProfileAvatar(props: Props) {
                 transition
                 disablePortal
             >
-                {({ TransitionProps }) => (
+                {({TransitionProps}) => (
                     <Grow
                         {...TransitionProps}
                         style={{
@@ -67,13 +71,18 @@ function ProfileAvatar(props: Props) {
                         <Paper>
                             <ClickAwayListener onClickAway={handleClose}>
                                 <MenuList
-                                    id="composition-menu"
-                                    aria-labelledby="composition-button"
+                                    id="profile-popup"
+                                    aria-labelledby="profile-popup"
                                     onKeyDown={handleListKeyDown}
+                                    sx={{margin: 0, textAlign: 'left', alignItems: 'left', minWidth: '150px'}}
                                 >
-                                    <MenuItem onClick={handleClose}>Profile</MenuItem>
-                                    <MenuItem onClick={handleClose}>My account</MenuItem>
-                                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                                    <Typography sx={{padding: '0 10px'}}>{props.username}</Typography>
+                                    <hr/>
+                                    <MenuItem sx={{padding: '5px 10px'}} onClick={(_event) => {
+                                        navigate('/account');
+                                        handleClose(_event)
+                                    }}>My account</MenuItem>
+                                    <MenuItem sx={{padding: '5px 10px'}} onClick={handleLogout}>Logout</MenuItem>
                                 </MenuList>
                             </ClickAwayListener>
                         </Paper>
@@ -81,6 +90,7 @@ function ProfileAvatar(props: Props) {
                 )}
             </Popper>
         </>
-)
+    )
 }
+
 export default ProfileAvatar;

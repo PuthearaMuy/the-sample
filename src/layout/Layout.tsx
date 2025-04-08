@@ -6,10 +6,11 @@ import {FilePathConstants} from "../constants/FilePathConstants.ts";
 import {LabelConstants} from "../constants/LabelConstants.ts";
 import {useContext, useEffect, useState} from "react";
 import {ApplicationContext} from "../contexts/ApplicationContext.ts";
-import {useAppSelector} from "../state/store/store.ts";
+import {useAppDispatch, useAppSelector} from "../state/store/store.ts";
 import {UserServiceAPI} from "../service/UserServiceAPI.ts";
 import ProfileAvatar from "../components/ProfileAvatar.tsx";
 import LoginButton from "../components/LoginButton.tsx";
+import {setUser} from "../state/slice/UserSlice.ts";
 
 function Layout() {
     const navigate = useNavigate();
@@ -18,17 +19,22 @@ function Layout() {
     const application = useAppSelector(state => state.application);
     const {process} = useAppSelector(state => state.process);
     const [profileImage, setProfileImage] = useState<string | undefined>(undefined)
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         if (userState.profileName) {
             UserServiceAPI.getUserProfilePicture().then((res) => {
                 const url = URL.createObjectURL(res.data);
                 if (url) {
-                    setProfileImage(url)
+                    setProfileImage(url);
+                    dispatch(setUser({
+                        ...userState,
+                        profileUrl: url
+                    }))
                 }
             })
         }
-    }, [userState])
+    }, [userState.profileName])
 
     return (
         <div style={{display: 'flex', flexDirection: 'column', width: '100%', height: '100%'}}>
@@ -59,7 +65,7 @@ function Layout() {
                         </Typography>
 
                         <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}, mx: '40px', gap: '2em'}}>
-                            {LabelConstants.pages.map((page) => {
+                            {LabelConstants.pages.map((page, index) => {
                                 if (page.path.includes("upload") && !application.isAuthenticated) {
                                     return <></>;
                                 }
@@ -67,7 +73,7 @@ function Layout() {
                                     <Typography
                                         variant="h6"
                                         noWrap
-                                        key={page.label}
+                                        key={index}
                                         onClick={() => navigate(page.path)}
                                         sx={{
                                             my: 2,
@@ -91,7 +97,7 @@ function Layout() {
 
                         {
                             profileImage ? (
-                                <ProfileAvatar profileImage={profileImage}/>
+                                <ProfileAvatar profileImage={profileImage} username={userState.username}/>
                             ) : (
                                 <LoginButton/>
                             )

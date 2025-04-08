@@ -9,8 +9,13 @@ import {Provider} from "react-redux";
 import {store} from "./state/store/store.ts";
 import {outlinedInputClasses} from '@mui/material/OutlinedInput';
 import ApplicationStartUp from "./page/ApplicationStartUp.tsx";
+import {LocalizationProvider} from "@mui/x-date-pickers";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 const theme = createTheme({
+    palette: {
+      mode: 'dark',
+    },
     cssVariables: true,
     typography: {
         fontFamily: 'var(--popin-font)',
@@ -19,14 +24,15 @@ const theme = createTheme({
         MuiOutlinedInput: {
             styleOverrides: {
                 notchedOutline: {
-                    borderColor: 'var(--TextField-brandBorderColor)',
+                    border: 'none',
+                    boxShadow: '0 0 2px 1px var(--primary-input-border-color)',
                 },
                 root: {
                     [`&:hover .${outlinedInputClasses.notchedOutline}`]: {
                         borderColor: 'var(--TextField-brandBorderHoverColor)',
                     },
                     [`&.Mui-focused .${outlinedInputClasses.notchedOutline}`]: {
-                        borderColor: 'var(--TextField-brandBorderFocusedColor)',
+                        boxShadow: '0 0 2px 2px var(--primary-input-border-color)',
                     },
                     color: 'var(--primary-color)',
                     outline: 'none',
@@ -41,11 +47,11 @@ const theme = createTheme({
 });
 
 const queryClient = new QueryClient({
- defaultOptions: {
-     queries: {
-         retry: false,
-     }
- }
+    defaultOptions: {
+        queries: {
+            retry: false,
+        }
+    }
 });
 
 const appContext: AppContext = {
@@ -56,15 +62,17 @@ function App() {
     return (
         <Provider store={store}>
             <ApplicationStartUp>
-                <ApplicationContext.Provider value={appContext}>
-                    <QueryClientProvider client={queryClient}>
-                        <ThemeProvider theme={theme}>
-                            <SnackbarProvider maxSnack={5}>
-                                <Layout/>
-                            </SnackbarProvider>
-                        </ThemeProvider>
-                    </QueryClientProvider>
-                </ApplicationContext.Provider>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <ApplicationContext.Provider value={appContext}>
+                        <QueryClientProvider client={queryClient}>
+                            <ThemeProvider theme={theme}>
+                                <SnackbarProvider maxSnack={5}>
+                                    <Layout/>
+                                </SnackbarProvider>
+                            </ThemeProvider>
+                        </QueryClientProvider>
+                    </ApplicationContext.Provider>
+                </LocalizationProvider>
             </ApplicationStartUp>
         </Provider>
     )

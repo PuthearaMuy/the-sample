@@ -17,6 +17,9 @@
     --secondary-hover-background-color: #FFFFFF10;
     --secondary-active-background-color: #FFFFFF40;
 
+    --primary-input-border-color: #ffffffb3;
+    --primary-input-disabled-border-color: #FFFFFF40;
+
     color: var(--primary-color);
     background-color: var(--primary-background-color);
     height: 100%;

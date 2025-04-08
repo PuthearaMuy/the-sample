@@ -1,0 +1,24 @@
+#profile-information-table  {
+    width: fit-content;
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+#profile-information-table td {
+    padding: 0 5px;
+}
+
+.user-sample ul {
+    list-style-type: none;
+    margin: 15px 20px 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    cursor: pointer;
+    width: fit-content;
+}
+
+.user-sample ul li:hover {
+    text-decoration: underline !important;
+}

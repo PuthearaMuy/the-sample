@@ -15,4 +15,12 @@ export class UserServiceAPI {
             responseType: 'blob'
         });
     }
+
+    public static updateUserProfile(userProfile: FormData) {
+        return this.axios.put(BackendConfigurationProperty.getUserManagementFullPath() + env.VITE_USER_PROFILE, userProfile, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+    }
 }

@@ -4,7 +4,7 @@ import {HTMLProps} from "react";
 
 export interface InputProps extends HTMLProps<HTMLInputElement>{
     placeholder?: string;
-    value?: string;
+    value?: string | number;
     name?: string;
     inputStyle?: React.CSSProperties;
     containerStyle?: React.CSSProperties;
