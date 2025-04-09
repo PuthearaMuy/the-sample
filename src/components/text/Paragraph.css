@@ -1,0 +1,25 @@
+.paragraph {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    text-indent: 30px;
+    word-break: break-word;
+}
+
+.paragraph.see-all {
+    -webkit-line-clamp: none;
+    line-clamp: none;
+}
+
+.read-more, .read-less {
+    cursor: pointer;
+    color: var(--primary-bright-color);
+    width: fit-content;
+}
+
+.read-more:hover, .read-less:hover {
+    text-decoration: underline;
+}

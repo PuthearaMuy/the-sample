@@ -12,6 +12,7 @@ import Account from "../page/user/account/Account.tsx";
 import ProfileInfo from "../page/user/information/ProfileInfo.tsx";
 import UserSample from "../page/user/sample/UserSample.tsx";
 import Purchase from "../page/user/purchase/Purchase.tsx";
+import UserProfile from "../page/user_dashboard/UserProfile.tsx";
 
 const routes: RouteObject[] = [
     {
@@ -64,6 +65,10 @@ const routes: RouteObject[] = [
                         element: <ProfileInfo/>
                     }
                 ]
+            },
+            {
+                path: 'account/:username',
+                element: <UserProfile/>
             },
             {
                 path: "login",

@@ -5,6 +5,7 @@
     border-radius: 8px;
     background-color: var(--secondary-background-color);
     cursor: pointer;
+    min-height: 180px;
 }
 
 .sample-container:hover {

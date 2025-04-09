@@ -11,6 +11,7 @@ import {SampleCheckout} from "../../model/SampleCheckout.ts";
 import NegotiationDetail from "./NegotiationDetail.tsx";
 import {formatDate} from "../../utils/Utils.ts";
 import TButton from "../../components/button/TButton.tsx";
+import {ApplicationConstants} from "../../constants/ApplicationConstants.ts";
 
 function SampleDetail() {
 
@@ -61,6 +62,13 @@ function SampleDetail() {
         });
     }
 
+    function onOwnerClick() {
+        if (detail?.ownerInfo.username) {
+            ApplicationConstants.setLastPage(location.pathname + location.search);
+            navigation("/account/" + detail.ownerInfo.username);
+        }
+    }
+
     return (
         <Container>
             <Stack>
@@ -99,6 +107,7 @@ function SampleDetail() {
                             <Stack direction={'row'} alignItems={'baseline'} gap={'5px'}>
                                 <Typography>Release by:</Typography>
                                 <Typography color={'var(--primary-bright-color)'}
+                                            onClick={onOwnerClick}
                                             sx={{cursor: 'pointer', ':hover': {textDecoration: 'underline'}}}>
                                     {detail?.ownerInfo.username}
                                 </Typography>
