@@ -60,22 +60,24 @@ function Account() {
                                 <td><Typography sx={{fontSize: '14px'}}>{userState.gender}</Typography></td>
                             </tr>
                             <tr>
-                                <TButton sx={{
-                                    visibility: location.href.includes("account/edit") ? 'hidden' : 'visible',
-                                    gap: '5px',
-                                    height: '35px',
-                                    padding: '10px',
-                                    marginTop: '10px',
-                                    '&:hover': {
-                                        borderColor: 'var(--primary-bright-color)',
-                                        color: 'var(--primary-bright-color)'
-                                    }
-                                }}
-                                         onClick={() => navigate("/account/edit")}
-                                >
-                                    <Typography fontSize={'13px'}>Edit</Typography>
-                                    <EditNoteOutlinedIcon/>
-                                </TButton>
+                                <td>
+                                    <TButton sx={{
+                                        visibility: location.href.includes("account/edit") ? 'hidden' : 'visible',
+                                        gap: '5px',
+                                        height: '35px',
+                                        padding: '10px',
+                                        marginTop: '10px',
+                                        '&:hover': {
+                                            borderColor: 'var(--primary-bright-color)',
+                                            color: 'var(--primary-bright-color)'
+                                        }
+                                    }}
+                                             onClick={() => navigate("/account/edit")}
+                                    >
+                                        <Typography fontSize={'13px'}>Edit</Typography>
+                                        <EditNoteOutlinedIcon/>
+                                    </TButton>
+                                </td>
                             </tr>
                             </tbody>
                         </table>

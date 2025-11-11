@@ -1,5 +1,6 @@
 export interface SamplePriceDTO {
     sampleId: number;
+    sampleTitle: string;
     samplePrices: SamplePrice[];
 }
 

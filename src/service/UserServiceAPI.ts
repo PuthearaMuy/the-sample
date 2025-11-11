@@ -10,8 +10,8 @@ export class UserServiceAPI {
         return this.axios.get(BackendConfigurationProperty.getUserManagementFullPath() + env.VITE_USER_PROFILE);
     }
 
-    public static getUserProfilePicture(userId?: number) {
-        return this.axios.get(BackendConfigurationProperty.getUserManagementFullPath() + env.VITE_USER_PROFILE_PICTURE + (userId ? `?user_id=${userId}`:''), {
+    public static getUserProfilePicture(username?: string) {
+        return this.axios.get(BackendConfigurationProperty.getUserManagementFullPath() + env.VITE_USER_PROFILE_PICTURE + (username ? `?username=${username}`:''), {
             responseType: 'blob'
         });
     }
@@ -22,5 +22,9 @@ export class UserServiceAPI {
                 'Content-Type': 'multipart/form-data'
             }
         });
+    }
+
+    public static getUserProfileDetail(username: string) {
+        return this.axios.get(BackendConfigurationProperty.getUserManagementFullPath() + env.VITE_USER_PROFILE_DETAIL + `/${username}`);
     }
 }

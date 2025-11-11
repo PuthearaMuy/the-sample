@@ -7,3 +7,9 @@ export interface UserProfile {
     gender: string;
     dateOfBirth: string;
 }
+
+export interface UserProfileDetail extends UserProfile {
+    description: string;
+    follower: number;
+    following: boolean;
+}
